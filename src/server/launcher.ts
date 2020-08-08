@@ -1,7 +1,9 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import path from 'path';
-require('dotenv').config();
+
+if (process.env.NODE_ENV !== 'production')
+    require('dotenv').config();
 
 const app = express();
 
