@@ -1,0 +1,32 @@
+@import url('../../variables');
+
+.input {
+  display: flex;
+  align-items: center;
+
+  height: 30px;
+
+  > div {
+    background-color: @var-secondary-color;
+    height: 100%;
+    width: 30px;
+    border-radius: 3px 0 0 3px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  svg {
+    width: @var-svg-default-width;
+    fill: white;
+  }
+
+  > input {
+    height: 100%;
+    outline: none;
+    border: 1px solid #ddd;
+    border-radius: 0 3px 3px 0;
+    padding: 10px;
+  }
+}

@@ -1,0 +1,31 @@
+@import url('../../variables');
+
+.button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  color: white;
+  width: 70%;
+  height: 40px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.button-accept {
+  background-color: @var-primary-color;
+  transition: background-color .2s linear;
+
+  &:hover {
+    background-color: @var-primary-dark-color;
+  }
+}
+
+.button-cancel {
+  background-color: @var-error-color;
+  transition: background-color .2s linear;
+
+  &:hover {
+    background-color: @var-error-dark-color;
+  }
+}
