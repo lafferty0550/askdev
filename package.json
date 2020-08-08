@@ -36,7 +36,9 @@
     "webpack-node-externals": "^2.5.1"
   },
   "scripts": {
-    "start": "NODE_ENV=production node webpack.config.js",
+    "postinstall": "npm run build",
+    "start": "node build/back.js",
+    "build": "NODE_ENV=production node webpack.config.js",
     "dev": "NODE_ENV=development node webpack.config.js"
   },
   "keywords": [],
