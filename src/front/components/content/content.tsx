@@ -1,24 +1,35 @@
-import React from 'react';
-import {Switch, Route} from 'react-router-dom';
+import React, {useContext} from 'react';
+import {Switch, Route, Redirect} from 'react-router-dom';
 
 import QuestionList from './qustion-list';
 import Question from './question';
 import Chat from './chat';
 import FAQ from './faq';
-import SignIn from './signin';
-import SignUp from './signup';
+import SignIn from '../../containers/content/signin';
+import SignUp from '../../containers/content/signup';
 
 import './content.less';
+import {AccountContext} from '../../account/context';
 
-export default (() => (
-    <div className="content">
-        <Switch>
-            <Route path='/questions' component={QuestionList}/>
-            <Route path='/questions/:id' component={Question}/>
-            <Route path='/chat' component={Chat}/>
-            <Route path='/faq' component={FAQ}/>
-            <Route path='/signin' component={SignIn}/>
-            <Route path='/signup' component={SignUp}/>
-        </Switch>
-    </div>
-)) as React.FC;
+export default (() => {
+    const {selectors} = useContext(AccountContext);
+    const isAuth = selectors.authorized();
+
+    return (
+        <div className='content'>
+            <Switch>
+                <Route path='/questions' component={QuestionList}/>
+                <Route path='/questions/:id' component={Question}/>
+                <Route path='/chat' component={Chat}/>
+                <Route path='/faq' component={FAQ}/>
+                {!isAuth && (
+                    <>
+                        <Route path='/signin' component={SignIn}/>
+                        <Route path='/signup' component={SignUp}/>
+                    </>
+                )}
+                <Redirect to='/questions'/>
+            </Switch>
+        </div>
+    );
+}) as React.FC;

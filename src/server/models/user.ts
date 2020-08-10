@@ -1,55 +1,28 @@
 import {model, Schema, Document} from 'mongoose';
 
-import Validator from '../helpers/validator';
-import {IComment} from './comment';
-import {IQuestion} from './question';
+import {IUser} from '../../common/types';
 
-export interface IUser extends Document {
-    email: string,
-    nickname: string,
-    password: String,
-
-    likedComments: IComment[],
-    likedQuestions: IQuestion[],
-
-    staredComments: IComment[],
-    staredQuestions: IQuestion[],
-
-    questions: IQuestion[],
-    comments: IComment[]
-}
+interface IUserDoc extends IUser, Document {}
 
 const schema = new Schema({
     email: {
         type: String,
         required: true,
-        trim: true,
-        validate: [Validator.isEmail, 'Please fill the correct email']
+        trim: true
     },
     nickname: {
         type: String,
         required: true,
-        trim: true,
-        validate: [Validator.isNickname, 'Please fill the correct nickname']
+        trim: true
     },
     password: {
         type: String,
-        required: true,
-        validate: [Validator.isPassword, "Please fill longer password"]
+        required: true
     },
 
-    likedComments: [{
-        type: Schema.Types.ObjectId,
-        ref: 'comment'
-    }],
     likedQuestions: [{
         type: Schema.Types.ObjectId,
         ref: 'question'
-    }],
-
-    staredComments: [{
-        type: Schema.Types.ObjectId,
-        ref: 'comment'
     }],
     staredQuestions: [{
         type: Schema.Types.ObjectId,
@@ -66,4 +39,4 @@ const schema = new Schema({
     }]
 });
 
-export default model<IUser>('user', schema);
+export default model<IUserDoc>('user', schema);

@@ -35,7 +35,7 @@ const front = {
         filename: '[hash].bundle.js',
         chunkFilename: '[hash].[name].bundle.js'
     },
-    devtool: 'eval-source-map',
+    devtool: 'source-map',
     module: {
         rules: [
             {
@@ -93,7 +93,8 @@ const server = {
         ]
     },
     resolve: {
-        alias: aliases
+        alias: aliases,
+        extensions: ['.ts', '.js']
     }
 };
 

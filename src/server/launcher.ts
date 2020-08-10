@@ -1,12 +1,17 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import path from 'path';
+import bodyParser from 'body-parser';
+
+import router from './routes';
 
 if (process.env.NODE_ENV !== 'production')
     require('dotenv').config();
 
 const app = express();
 
+app.use(bodyParser.json());
+app.use('/api', router);
 app.use(express.static(path.resolve('build', 'public')));
 
 (async () => {

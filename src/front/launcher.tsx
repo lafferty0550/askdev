@@ -1,15 +1,19 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {BrowserRouter} from 'react-router-dom';
+import {HashRouter} from 'react-router-dom';
+
+import App from './components/app';
+import {AccountProvider} from './account/context';
 
 import './launcher.less';
-import App from './components/app';
 
 ReactDOM.render(
     <React.StrictMode>
-        <BrowserRouter>
-            <App/>
-        </BrowserRouter>
+        <AccountProvider>
+            <HashRouter>
+                <App/>
+            </HashRouter>
+        </AccountProvider>
     </React.StrictMode>,
     document.getElementById('root')
 );

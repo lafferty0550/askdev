@@ -4,6 +4,8 @@ export {default as PlusIcon} from './plus';
 export {default as QuestionIcon} from './question';
 export {default as SignInIcon} from './signin';
 export {default as SignUpIcon} from './signup';
+export {default as SignOutIcon} from './signout';
 export {default as EmailIcon} from './email';
 export {default as NicknameIcon} from './nickname';
 export {default as PasswordIcon} from './password';
+export {default as MagnifierIcon} from './magnifier';

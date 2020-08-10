@@ -1,6 +1,6 @@
 import {Schema, Document, model} from 'mongoose';
 
-import Validator from '../helpers/validator';
+import Validator from '../../common/helpers/validator';
 
 export interface IComment extends Document {
     body: string,
