@@ -14,9 +14,11 @@ const _src = path.join(_root, '/src');
 const _front = path.join(_src, '/front');
 const _server = path.join(_src, '/server');
 const _common = path.join(_src, '/common');
+const _init = path.join(_src, '/init');
 
 const _frontEntry = path.join(_front, '/launcher.tsx');
 const _backEntry = path.join(_server, '/launcher.ts');
+const _initEntry = path.join(_init, '/launcher.ts')
 
 const _build = path.join(_root, '/build');
 const _output = path.join(_build, '/public');
@@ -76,7 +78,8 @@ const server = {
     target: 'node',
     externals: [nodeExternals()],
     entry: {
-        back: _backEntry
+        back: _backEntry,
+        init: _initEntry
     },
     output: {
         path: _build,

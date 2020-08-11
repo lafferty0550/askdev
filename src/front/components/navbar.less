@@ -20,20 +20,21 @@
 }
 
 .navbar__ask {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
   font-size: 20px;
-  color: white;
   background-color: @var-secondary-color;
   box-shadow: 0 0 2px 2px @var-secondary-color;
-  padding: @var-svg-margin;
   border-radius: 5px;
   margin-top: 50px;
   height: 30px;
   cursor: pointer;
   transition: background-color .2s linear;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  color: white;
+  text-decoration: none;
+  padding: 0 10px;
 
   &:hover {
     background-color: @var-secondary-dark-color;

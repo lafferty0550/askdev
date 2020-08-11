@@ -1,3 +1,5 @@
+import md5 from 'md5';
+
 import {AccountState, Action} from './types';
 import {ACTION_TYPES} from './reducer';
 
@@ -8,7 +10,7 @@ export const useActions = (state: AccountState, dispatch: Dispatch<Action>) => (
     login: async (email: string, password: string) => {
         try {
             dispatch({type: ACTION_TYPES.LOGIN_PENDING});
-            const res = await API.account.login(email, password);
+            const res = await API.account.login(email, md5(password));
             localStorage.setItem('token', res.data.token);
             localStorage.setItem('refreshToken', res.data.refreshToken);
             dispatch({type: ACTION_TYPES.LOGIN_SUCCESS, msg: res.data.msg, user: res.data.user});
@@ -19,7 +21,7 @@ export const useActions = (state: AccountState, dispatch: Dispatch<Action>) => (
     register: async (email: string, nickname: string, password: string) => {
         try {
             dispatch({type: ACTION_TYPES.REGISTER_PENDING});
-            const res = await API.account.register(email, nickname, password);
+            const res = await API.account.register(email, nickname, md5(password));
             dispatch({type: ACTION_TYPES.REGISTER_SUCCESS, msg: res.data.msg});
         } catch(err) {
             dispatch({type: ACTION_TYPES.REGISTER_FAILURE, msg: err.response.data.msg});

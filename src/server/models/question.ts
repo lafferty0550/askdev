@@ -1,15 +1,8 @@
 import {Schema, Document, model} from 'mongoose';
 
-import {IComment} from './comment';
+import {IQuestion} from '../../common/types';
 
-export interface IQuestion extends Document {
-    title: string,
-    body: string,
-    date: Date,
-    likes: number,
-    stars: number,
-    comments: IComment[]
-}
+export interface IQuestionDoc extends IQuestion, Document {}
 
 const schema = new Schema({
     title: {
@@ -40,4 +33,4 @@ const schema = new Schema({
     }]
 });
 
-export default model<IQuestion>('question', schema);
+export default model<IQuestionDoc>('question', schema);

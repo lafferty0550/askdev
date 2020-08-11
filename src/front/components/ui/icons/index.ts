@@ -9,3 +9,6 @@ export {default as EmailIcon} from './email';
 export {default as NicknameIcon} from './nickname';
 export {default as PasswordIcon} from './password';
 export {default as MagnifierIcon} from './magnifier';
+export {default as InfoIcon} from './info';
+export {default as LikeIcon} from './like';
+export {default as StarIcon} from './star';

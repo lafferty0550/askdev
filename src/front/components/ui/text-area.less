@@ -1,0 +1,13 @@
+@import url(../../variables);
+
+.text-area {
+  resize: none;
+  border-radius: 5px;
+  border: 1px solid @var-primary-color;
+  outline: none;
+  transition: border-color .2s linear;
+
+  &:focus {
+    border: 1px solid @var-secondary-color;
+  }
+}

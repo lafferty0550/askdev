@@ -6,11 +6,11 @@ export default class {
     }
 
     static isNickname(text: string) {
-        return (text.length > 5) && (text.length < 16);
+        return (text.length >= 5) && (text.length <= 16);
     }
 
     static isPassword(text: string) {
-        return (text.length > 5) && (text.length < 32);
+        return (text.length >= 5) && (text.length <= 32);
     }
 
     static isComment(text: string) {

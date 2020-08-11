@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React from 'react';
 import {Link} from 'react-router-dom';
 
 import {
@@ -22,10 +22,10 @@ export default (({logout, isAuth}) => (
             <div className='navbar__logo'>
                 {'</>'}DevASK
             </div>
-            <div className='navbar__ask'>
+            <Link to='/questions/new' className='navbar__ask'>
                 <PlusIcon/>
                 ASK QUESTION
-            </div>
+            </Link>
             <nav className='navbar__nav'>
                 <Link to='/questions'>
                     <QuestionIcon/>

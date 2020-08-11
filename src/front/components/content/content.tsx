@@ -1,7 +1,8 @@
 import React, {useContext} from 'react';
 import {Switch, Route, Redirect} from 'react-router-dom';
 
-import QuestionList from './qustion-list';
+import QuestionList from '../../containers/content/question-list';
+import NewQuestion from '../../containers/content/new-question';
 import Question from './question';
 import Chat from './chat';
 import FAQ from './faq';
@@ -18,6 +19,7 @@ export default (() => {
     return (
         <div className='content'>
             <Switch>
+                <Route path='/questions/new' component={NewQuestion}/>
                 <Route path='/questions' component={QuestionList}/>
                 <Route path='/questions/:id' component={Question}/>
                 <Route path='/chat' component={Chat}/>

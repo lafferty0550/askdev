@@ -1,7 +1,7 @@
 import comment, {IComment} from './comment';
-import question, {IQuestion} from './question';
-import user, {IUser} from './user';
+import question, {IQuestionDoc} from './question';
+import user from './user';
 
-export type {IComment, IQuestion, IUser};
+export type {IComment, IQuestionDoc};
 
 export default {comment, question, user};

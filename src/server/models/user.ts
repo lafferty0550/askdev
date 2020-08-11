@@ -2,7 +2,7 @@ import {model, Schema, Document} from 'mongoose';
 
 import {IUser} from '../../common/types';
 
-interface IUserDoc extends IUser, Document {}
+export interface IUserDoc extends IUser, Document {}
 
 const schema = new Schema({
     email: {
