@@ -11,17 +11,20 @@ import {
 } from './ui/icons';
 
 import './navbar.less';
+import {LoadingWrapper} from './content/loading-wrapper';
+import {Pending} from '../hooks/useFetch';
 
 type Props = {
     logout: () => void,
-    isAuth: boolean
+    isAuth: boolean,
+    loginPending: Pending
 };
 
-export default (({logout, isAuth}) => (
+export const Navbar = (({logout, isAuth, loginPending}) => (
         <div className='navbar'>
-            <div className='navbar__logo'>
+            <Link className='navbar__logo' to='/questions'>
                 {'</>'}DevASK
-            </div>
+            </Link>
             <Link to='/questions/new' className='navbar__ask'>
                 <PlusIcon/>
                 ASK QUESTION
@@ -40,28 +43,30 @@ export default (({logout, isAuth}) => (
                     FAQ
                 </Link>
             </nav>
-            {isAuth
-                ? (
-                    <div className='navbar__footer'>
-                        <Link to='/signin' onClick={logout}>
-                            <SignOutIcon/>
-                            Sign Out
-                        </Link>
-                    </div>
-                )
-                : (
-                    <div className='navbar__footer'>
-                        <Link to='/signin'>
-                            <SignInIcon/>
-                            Sign In
-                        </Link>
-                        <Link to='/signup'>
-                            <SignUpIcon/>
-                            Sign Up
-                        </Link>
-                    </div>
-                )
-            }
+            <LoadingWrapper pending={loginPending} success={true}>
+                {isAuth
+                    ? (
+                        <div className='navbar__footer'>
+                            <Link to='/signin' onClick={logout}>
+                                <SignOutIcon/>
+                                Sign Out
+                            </Link>
+                        </div>
+                    )
+                    : (
+                        <div className='navbar__footer'>
+                            <Link to='/signin'>
+                                <SignInIcon/>
+                                Sign In
+                            </Link>
+                            <Link to='/signup'>
+                                <SignUpIcon/>
+                                Sign Up
+                            </Link>
+                        </div>
+                    )
+                }
+            </LoadingWrapper>
         </div>
     )
 ) as React.FC<Props>;

@@ -2,7 +2,7 @@ import {Schema, Document, model} from 'mongoose';
 
 import {IQuestion} from '../../common/types';
 
-export interface IQuestionDoc extends IQuestion, Document {}
+export interface IQuestionDoc extends Document, IQuestion {}
 
 const schema = new Schema({
     title: {
@@ -21,11 +21,11 @@ const schema = new Schema({
     },
     likes: {
         type: Number,
-        required: true
+        default: 0
     },
     stars: {
         type: Number,
-        required: true
+        default: 0
     },
     comments: [{
         type: Schema.Types.ObjectId,

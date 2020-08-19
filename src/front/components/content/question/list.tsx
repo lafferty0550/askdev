@@ -1,20 +1,21 @@
-import React, {Ref, useEffect, useRef} from 'react';
+import React from 'react';
 import dateFormat from 'dateformat';
+import {Link} from 'react-router-dom';
 
-import {IQuestion} from '../../../common/types';
+import {IQuestion} from '../../../../common/types';
 
-import './question-list.less';
-import {LikeIcon, StarIcon} from '../ui/icons';
+import './list.less';
+import {LikeIcon, StarIcon} from '../../ui/icons';
 
 type Props = {
-    list: Array<IQuestion>
+    list?: IQuestion[]
 };
 
-export default (({list}) => (
+export const QuestionList = (({list}) => {
+    return (
         <div className='list'>
-            {console.log(list)}
-            {list.map((item: IQuestion) => (
-                <div className='list-item' key={item._id}>
+            {list?.map((item: IQuestion) => (
+                <Link className='list-item' key={item._id} to={`/questions/${item._id}`}>
                     <div className='list-item__left-section'>
                         <div className="list-item__title">{item.title}</div>
                         <div className="list-item__body">{item.body}</div>
@@ -23,17 +24,17 @@ export default (({list}) => (
                         </div>
                     </div>
                     <div className='list-item__right-section'>
-                        <div className="list-item__likes">
+                        <div>
                             <LikeIcon/>
                             <span>{item.likes}</span>
                         </div>
-                        <div className="list-item__start">
+                        <div>
                             <StarIcon/>
                             <span>{item.stars}</span>
                         </div>
                     </div>
-                </div>
+                </Link>
             ))}
         </div>
-    )
-) as React.FC<Props>;
+    );
+}) as React.FC<Props>;

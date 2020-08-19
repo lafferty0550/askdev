@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+
 if (process.env.mode === 'development')
     require('dotenv').config();
 

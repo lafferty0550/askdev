@@ -1,79 +1,31 @@
 import {AccountState, Action} from './types';
 
 export const ACTION_TYPES = {
-    LOGIN_PENDING: 'account/login/PENDING',
-    LOGIN_SUCCESS: 'account/login/SUCCESS',
-    LOGIN_FAILURE: 'account/login/FAILURE',
-
+    SET_USER: 'account/SET_USER',
+    SET_JWT: 'account/SET_JWT',
     LOGOUT: 'account/LOGOUT',
-
-    REGISTER_PENDING: 'account/register/PENDING',
-    REGISTER_SUCCESS: 'account/register/SUCCESS',
-    REGISTER_FAILURE: 'account/register/FAILURE',
 
     /*UPDATE_USER: 'account/UPDATE_USER',
     UPDATE_JWT: 'account/UPDATE-JWT'*/
 };
 
-export const initialState: AccountState = {
-    status: {
-        login: {
-            pending: false,
-            success: false,
-            msg: null
-        },
-        register: {
-            pending: false,
-            success: false,
-            msg: null
-        }
-    },
+const JWT = localStorage.getItem('token') || '';
 
-    authorized: !!localStorage.getItem('token'),
-    about: {
-        email: '',
-        nickname: '',
-
-        questions: [],
-        comments: [],
-
-        likedQuestions: [],
-        staredQuestions: []
-    },
-    JWT: null
-};
+export const initialState: AccountState = {authorized: false, about: null, JWT};
 
 export const reducer = (state = initialState, action: Action): AccountState => {
-    const changeStatus = (field: string, status: 'pending' | 'success' | 'failed', msg?: string | null) => ({
-        ...state,
-        status: {
-            ...state.status,
-            [field]: {
-                pending: (status === 'pending'),
-                success: (status === 'success'),
-                msg
-            }
-        }
-    });
-
     switch (action.type) {
-        case ACTION_TYPES.LOGIN_PENDING:
-            return changeStatus('login', 'pending');
-        case ACTION_TYPES.LOGIN_SUCCESS:
+        case ACTION_TYPES.SET_USER:
             return {
-                ...changeStatus('login', 'success', action.msg),
+                ...state,
                 authorized: true,
                 about: action.user
             };
-        case ACTION_TYPES.LOGIN_FAILURE:
-            return changeStatus('login', 'failed', action.msg);
-
-        case ACTION_TYPES.REGISTER_PENDING:
-            return changeStatus('register', 'pending');
-        case ACTION_TYPES.REGISTER_SUCCESS:
-            return changeStatus('register', 'success', action.msg);
-        case ACTION_TYPES.REGISTER_FAILURE:
-            return changeStatus('register', 'failed', action.msg);
+        case ACTION_TYPES.SET_JWT:
+            return {
+                ...state,
+                JWT: action.JWT || ''
+            };
 
         case ACTION_TYPES.LOGOUT:
             return {

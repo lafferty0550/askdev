@@ -3,22 +3,12 @@ import {IUser} from '../../common/types';
 export type Action = {
     type: string,
     user?: any,
-    msg?: string
-};
-
-export type Status = {
-    pending: boolean,
-    success: boolean,
-    msg: string | null
+    msg?: string,
+    JWT?: string
 };
 
 export interface AccountState {
-    status: {
-        login: Status,
-        register: Status
-    },
-
     authorized: boolean,
-    about: IUser,
-    JWT: string | null
+    about: IUser | null,
+    JWT: string
 }

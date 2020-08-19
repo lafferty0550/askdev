@@ -6,7 +6,7 @@ type Props = {
     title: string
 };
 
-export default (({title}) => {
+export const Checkbox = (({title}) => {
     return (
         <div className='checkbox'>
             <input type='checkbox'/>

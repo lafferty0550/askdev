@@ -4,7 +4,17 @@ import {InfoIcon} from '../ui/icons';
 
 import './input.less';
 
-export default (({
+type Props = {
+    Icon?: FunctionComponent,
+    placeholder: string,
+    notice?: string,
+    warning?: boolean,
+    type?: string,
+
+    onChange: (e: ChangeEvent<HTMLInputElement>) => void
+}
+
+export const Input = (({
                      Icon, placeholder, notice,
                      warning, type = 'text', onChange
                  }) => {
@@ -24,13 +34,3 @@ export default (({
         </div>
     );
 }) as React.FC<Props>;
-
-type Props = {
-    Icon?: FunctionComponent,
-    placeholder: string,
-    notice?: string,
-    warning?: boolean,
-    type?: string,
-
-    onChange: (e: ChangeEvent<HTMLInputElement>) => void
-}

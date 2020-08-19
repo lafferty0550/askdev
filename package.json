@@ -3,8 +3,17 @@
   "version": "1.0.0",
   "description": "",
   "main": "webpack.config.js",
+  "scripts": {
+    "postinstall": "npm run build && npm run init",
+    "start": "node build/back.js",
+    "build": "NODE_ENV=production node webpack.config.js",
+    "dev": "NODE_ENV=development node webpack.config.js",
+    "init": "node build/init.js",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage"
+  },
   "dependencies": {
-    "@types/md5": "^2.2.0",
     "axios": "^0.19.2",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
@@ -29,14 +38,21 @@
     "@types/dateformat": "^3.0.1",
     "@types/express": "^4.17.7",
     "@types/jsonwebtoken": "^8.5.0",
+    "@types/md5": "^2.2.0",
     "@types/mongoose": "^5.7.36",
     "@types/react": "^16.9.45",
     "@types/react-dom": "^16.9.8",
     "@types/react-router-dom": "^5.1.5",
+    "babel-jest": "^26.3.0",
     "babel-loader": "^8.1.0",
     "css-loader": "^4.2.1",
     "dotenv": "^8.2.0",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.3",
+    "enzyme-to-json": "^3.5.0",
     "html-webpack-plugin": "^4.3.0",
+    "identity-obj-proxy": "^3.0.0",
+    "jest": "^26.4.0",
     "less-loader": "^6.2.0",
     "md5": "^2.3.0",
     "nodemon": "^2.0.4",
@@ -47,12 +63,20 @@
     "webpack-cli": "^3.3.12",
     "webpack-node-externals": "^2.5.1"
   },
-  "scripts": {
-    "postinstall": "npm run build && npm run init",
-    "start": "node build/back.js",
-    "build": "NODE_ENV=production node webpack.config.js",
-    "dev": "NODE_ENV=development node webpack.config.js",
-    "init": "node build/init.js"
+  "jest": {
+    "verbose": true,
+    "clearMocks": true,
+    "collectCoverage": true,
+    "setupFilesAfterEnv": [
+      "./config/setupTest.js"
+    ],
+    "snapshotSerializers": [
+      "./node_modules/enzyme-to-json/serializer"
+    ],
+    "moduleNameMapper": {
+      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "./__mocks__/fileMock.js",
+      "\\.(less)$": "identity-obj-proxy"
+    }
   },
   "keywords": [],
   "author": "",

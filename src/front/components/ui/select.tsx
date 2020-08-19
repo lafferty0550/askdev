@@ -11,7 +11,7 @@ type Props = {
     options: Option[]
 };
 
-export default (({options}) => {
+export const Select = (({options}) => {
     const [selected, setSelected] = useState({} as Option);
     const [show, setShow] = useState(false);
 

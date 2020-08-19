@@ -9,7 +9,7 @@ type Props = {
     onClick?: (e: MouseEvent) => void
 };
 
-export default (({type, onClick, disabled, children}) => (
+export const Button = (({type, onClick, disabled, children}) => (
     <div className={`button button-${type} ${disabled ? 'button-disabled' : 'button-enabled'}`} onClick={onClick}>
         {children}
     </div>

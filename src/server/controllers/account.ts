@@ -2,9 +2,16 @@ import {Request, Response} from 'express';
 
 import db from '../models';
 import Tools from '../tools';
+import {
+    GetMeResponse, LoginData,
+    LoginResponse,
+    PatchMeResponse,
+    RefreshTokenResponse,
+    RegisterResponse
+} from '../../common/types';
 
 const refreshTokens = {} as {
-    [key: string]: any
+    [key: string]: LoginData
 };
 
 export const login = async (req: Request, res: Response) => {
@@ -13,38 +20,23 @@ export const login = async (req: Request, res: Response) => {
     try {
         const user = await db.user.findOne({email}, {__v: 0});
         if (!user)
-            return res.status(401).send({
-                success: false,
-                msg: 'user does not exist'
-            });
+            return res.status(401).send({msg: 'user does not exist'} as LoginResponse);
         const isMatch = Tools.compareHash(password, user.password as string);
         if (!isMatch)
-            return res.status(401).send({
-                success: false,
-                msg: 'invalid credentials'
-            });
+            return res.status(401).send({msg: 'invalid credentials'} as LoginResponse);
 
         const token = Tools.generateJWT('access', user.id);
         const refreshToken = Tools.generateJWT('refresh', user.id);
 
-        const response = {
-            success: true,
-            user: {
-                ...user.toJSON(),
-                password: undefined
-            },
+        const data: LoginData = {
+            user: {...user.toJSON(), password: undefined},
             token,
             refreshToken,
-            msg: 'login successful'
         };
-        refreshTokens[refreshToken] = response;
-        res.send(response);
+        refreshTokens[refreshToken] = data;
+        res.send({data: data, msg: 'login successful'} as LoginResponse);
     } catch (err) {
-        console.error(err.toString());
-        res.status(401).send({
-            success: false,
-            msg: err.toString()
-        });
+        res.status(401).send({msg: err.toString()} as LoginResponse);
     }
 };
 
@@ -53,30 +45,18 @@ export const register = async (req: Request, res: Response) => {
 
     try {
         await new db.user({email, nickname, password: Tools.generateHash(password)}).save();
-        res.json({success: true, msg: 'register successful'});
+        res.json({msg: 'register successful'} as RegisterResponse);
     } catch (err) {
-        console.error(err.toString());
-        res.status(401).send({
-            success: false,
-            msg: err.toString()
-        });
+        res.status(401).send({msg: err.toString()} as RegisterResponse);
     }
 };
 
 export const refreshToken = (req: Request, res: Response) => {
-    const {refreshToken, id} = req.body
-
+    const {refreshToken} = req.body
     if (refreshToken && (refreshToken in refreshTokens))
-        res.send({
-            success: true,
-            token: Tools.generateJWT('access', id)
-        });
+        res.send({data: {token: Tools.generateJWT('access', refreshTokens[refreshToken].user._id)}} as RefreshTokenResponse);
     else {
-        console.error('refresh token failed: no refresh token')
-        res.status(404).json({
-            success: false,
-            msg: 'invalid refresh token'
-        });
+        res.status(404).json({msg: 'invalid refresh token'} as RefreshTokenResponse);
     }
 };
 
@@ -84,16 +64,9 @@ export const getMe = async (req: Request, res: Response) => {
     try {
         const decoded: any = Tools.decodeJWT(req.headers['x-access-token'] as string);
         const user = await db.user.findById(decoded.id, {__v: 0, password: 0});
-        res.send({
-            success: true,
-            user: user
-        });
+        res.send({data: {user}} as GetMeResponse);
     } catch (err) {
-        console.error(err.toString());
-        res.status(401).send({
-            success: false,
-            msg: err.toString()
-        });
+        res.status(401).send({msg: err.toString()} as GetMeResponse);
     }
 };
 
@@ -107,15 +80,8 @@ export const patchMe = async (req: Request, res: Response) => {
         delete changes._id;
 
         const user = await db.user.updateOne({_id: decoded.id}, {$set: changes});
-        res.send({
-            success: true,
-            user: user
-        });
+        res.send({data: {user}} as PatchMeResponse);
     } catch (err) {
-        console.error(err.toString());
-        res.status(401).send({
-            success: false,
-            msg: err.toString()
-        });
+        res.status(401).send({msg: err.toString()} as PatchMeResponse);
     }
 };

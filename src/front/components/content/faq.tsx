@@ -1,5 +1,5 @@
 import React from 'react';
 
-export default (() => (
+export const FAQ = (() => (
     <div>Not implemented now</div>
 )) as React.FC;

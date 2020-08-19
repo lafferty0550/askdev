@@ -1,11 +1,13 @@
-import React from 'react';
+import React, {ChangeEvent} from 'react';
 
 import './text-area.less';
 
 type Props = {
-    className?: string
+    className?: string,
+    placeholder?: string,
+    onChange: (e: ChangeEvent<HTMLTextAreaElement>) => void
 };
 
-export default(({className}) => (
-   <textarea className={`text-area ${className}`}/>
+export const TextArea = (({className, placeholder, onChange}) => (
+   <textarea className={`text-area ${className}`} placeholder={placeholder} onChange={onChange}/>
 )) as React.FC<Props>;

@@ -1,19 +1,21 @@
 import React, {useState} from 'react';
 
-import Select, {Option} from './ui/select';
-import Checkbox from './ui/checkbox';
-import Button from './ui/button';
+import {Select, Option} from './ui/select';
+import {Checkbox} from './ui/checkbox';
+import {Button} from './ui/button';
 import {MagnifierIcon} from './ui/icons';
 
 import './sidebar.less';
 
-export default (() => {
+export const Sidebar = (() => {
     const [show, setShow] = useState(true);
 
     return (
         <div className={`sidebar ${!show ? 'sidebar-hidden' : 'sidebar-showed'}`}>
             <button className='sidebar__toggle'>
-                {show ? <div onClick={() => setShow(false)}>{'>'}</div> : <div onClick={() => setShow(true)}>{'<'}</div>}
+                {show ? <div id='toggle' onClick={() => {
+                    setShow(false);
+                }}>{'>'}</div> : <div id='toggle' onClick={() => setShow(true)}>{'<'}</div>}
             </button>
             <div className='sidebar__sections'>
                 <div className='sidebar__section'>
@@ -28,7 +30,7 @@ export default (() => {
                 <div className='sidebar__section'>
                     <div className='sidebar__section-title'>Filter settings</div>
                     <div className='sidebar__section-items'>
-                        <div className='sidebar__section-item'>
+                        <div className='sidebar__section-item sidebar__select'>
                             <Select
                                 options={[{value: '0', title: 'Most popular'}, {value: '1', title: 'Most relevant'}, {
                                     value: '2',

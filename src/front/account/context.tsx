@@ -1,58 +1,37 @@
 import React, {createContext, useReducer} from 'react';
 
-import {AccountState} from './types';
-import {useActions} from './actions';
 import {useSelectors} from './selectors';
 import {initialState, reducer} from './reducer';
+import {IUser} from '../../common/types';
+import {Action} from './types';
 
-type ContextType = {
-    state: AccountState,
-    actions: ReturnType<typeof useActions>,
-    selectors: ReturnType<typeof useSelectors>
-};
-// dummy values
-const initialContext: ContextType = {
-    state: {...initialState},
-    actions: {
-        login: async () => undefined,
-        register: async () => undefined,
-        logout: async () => undefined,
-        /*updateUser: async () => undefined,
-        updateJWT: async () => undefined*/
-    },
-    selectors: {
-        loginStatus: () => ({pending: false, success: false, msg: null}),
-        registerStatus: () => ({pending: false, success: false, msg: null}),
-        authorized: () => false,
-        user: () => ({
-            email: '',
-            nickname: '',
+const JWT = localStorage.getItem('token') || '';
 
-            questions: [],
-            comments: [],
-
-            likedQuestions: [],
-            staredQuestions: []
-        }),
-        JWT: () => ''
-    }
+type AccountContext = {
+    authorized: boolean,
+    about: IUser | null,
+    JWT: string
 };
 
-export const AccountContext = createContext<ContextType>(initialContext);
+const initialContext: AccountContext = {authorized: false, about: null, JWT};
+
+const initialDispatchContext = (action: Action) => {};
+
+type AccountDispatchContext = typeof initialDispatchContext;
+
+export const AccountContext = createContext<AccountContext>(initialContext);
+export const AccountDispatchContext = createContext<AccountDispatchContext>(initialDispatchContext);
 
 export const AccountProvider: React.FC = ({children}) => {
     const [state, dispatch] = useReducer(reducer, initialState);
 
-    const actions = useActions(state, dispatch);
     const selectors = useSelectors(state);
-    const contextValue = {
-        state: {...state},
-        actions: {...actions},
-        selectors: {...selectors}
-    };
+    const contextValue = {...selectors};
     return (
         <AccountContext.Provider value={contextValue}>
-            {children}
+            <AccountDispatchContext.Provider value={dispatch}>
+                {children}
+            </AccountDispatchContext.Provider>
         </AccountContext.Provider>
     )
 };

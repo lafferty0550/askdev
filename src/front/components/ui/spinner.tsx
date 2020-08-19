@@ -1,12 +1,12 @@
 import React from 'react';
 
 type Props = {
-    className: string
+    className?: string
 }
 
 import './spinner.less';
 
-export default (({className}) => (
+export const Spinner = (({className}) => (
     <svg viewBox='0 0 512 512' className={`spinner ${className}`}>
         <g id='flat'>
             <path
