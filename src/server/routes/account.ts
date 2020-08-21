@@ -1,9 +1,9 @@
-import express from 'express';
+import express, {Router} from 'express';
 
-import {checkEmail, checkJWT, validate} from '../middlewares/account';
-import {getMe, login, patchMe, refreshToken, register} from '../controllers/account';
+import {checkEmail, checkJWT, validate} from '$middlewares/account';
+import {getMe, login, patchMe, refreshToken, register} from '$controllers/account';
 
-const router = express.Router();
+const router: Router = express.Router();
 
 router.post('/login', [validate], login);
 router.post('/register', [checkEmail, validate], register);

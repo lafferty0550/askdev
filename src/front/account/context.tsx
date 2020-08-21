@@ -1,34 +1,22 @@
 import React, {createContext, useReducer} from 'react';
 
-import {useSelectors} from './selectors';
 import {initialState, reducer} from './reducer';
-import {IUser} from '../../common/types';
-import {Action} from './types';
+import {AccountDispatch, AccountState} from './types';
 
-const JWT = localStorage.getItem('token') || '';
+const JWT: string = localStorage.getItem('token') || '';
 
-type AccountContext = {
-    authorized: boolean,
-    about: IUser | null,
-    JWT: string
-};
+const initialContext: AccountState = {authorized: false, about: null, JWT};
 
-const initialContext: AccountContext = {authorized: false, about: null, JWT};
+const initialDispatchContext: AccountDispatch = () => {};
 
-const initialDispatchContext = (action: Action) => {};
-
-type AccountDispatchContext = typeof initialDispatchContext;
-
-export const AccountContext = createContext<AccountContext>(initialContext);
-export const AccountDispatchContext = createContext<AccountDispatchContext>(initialDispatchContext);
+export const AccountContext = createContext<AccountState>(initialContext);
+export const AccountDispatchContext = createContext<AccountDispatch>(initialDispatchContext);
 
 export const AccountProvider: React.FC = ({children}) => {
-    const [state, dispatch] = useReducer(reducer, initialState);
+    const [state, dispatch]: [AccountState, AccountDispatch] = useReducer(reducer, initialState);
 
-    const selectors = useSelectors(state);
-    const contextValue = {...selectors};
     return (
-        <AccountContext.Provider value={contextValue}>
+        <AccountContext.Provider value={{...state}}>
             <AccountDispatchContext.Provider value={dispatch}>
                 {children}
             </AccountDispatchContext.Provider>

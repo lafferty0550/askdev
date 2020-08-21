@@ -1,6 +1,6 @@
 import {model, Schema, Document} from 'mongoose';
 
-import {IUser} from '../../common/types';
+import {IUser} from '$common/types';
 
 export interface IUserDoc extends IUser, Document {}
 

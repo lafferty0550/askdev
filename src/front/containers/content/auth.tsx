@@ -1,14 +1,14 @@
 import React, {useContext, useEffect, useState} from 'react';
-
-import {API} from '../../core/api';
-import {LoginData, RegisterData} from '../../../common/types';
-import {Pending, useFetch} from '../../hooks/useFetch';
 import {Redirect} from 'react-router-dom';
-import {LoadingWrapper} from '../../components/content/loading-wrapper';
-import {Auth} from '../../components/content/auth';
-import {AccountDispatchContext} from '../../account/context';
-import {ACTION_TYPES} from '../../account/reducer';
-import {UserInput} from '../../core/api/account';
+
+import {API} from '$core/api';
+import {LoginData, RegisterData} from '$common/types';
+import {Pending, useFetch} from '$hooks/useFetch';
+import {LoadingWrapper} from '$components/content/loading-wrapper';
+import {Auth} from '$components/content/auth';
+import {AccountDispatchContext} from '$account/context';
+import {ACTION_TYPES} from '$account/reducer';
+import {UserInput} from '$core/api/account';
 
 type Props = { isLogin: boolean };
 

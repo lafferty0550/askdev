@@ -1,8 +1,8 @@
 import {useState} from 'react';
-
-import {Data, Response} from '../../common/types';
 import {AxiosError} from 'axios';
-import {APIHandler} from '../core/api';
+
+import {Data, Response} from '$common/types';
+import {APIHandler} from '$core/api';
 
 export enum Pending {
     'idle',
@@ -10,9 +10,18 @@ export enum Pending {
     'fetched'
 }
 
-export const useFetch = <ExpectedData extends Data>() => {
+export type FetchResult<T> = {
+    pending: Pending,
+    success: boolean,
+    msg: string | undefined,
+    data: T | undefined,
+
+    makeFetch: (handler: APIHandler) => Promise<void>
+};
+
+export const useFetch = <ExpectedData extends Data>(): FetchResult<ExpectedData> => {
     const [pending, setPending] = useState<Pending>(Pending.idle);
-    const [success, setSuccess] = useState<boolean>(false);
+    const [success, setSuccess] = useState(false);
     const [msg, setMsg] = useState<string>();
     const [data, setData] = useState<ExpectedData>();
 

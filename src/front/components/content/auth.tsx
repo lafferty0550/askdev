@@ -1,5 +1,6 @@
 import React, {ChangeEvent, useState} from 'react';
-import Validator from '../../../common/helpers/validator';
+
+import Validator from '$common/helpers/validator';
 import {Input} from '../ui/input';
 import {EmailIcon, NicknameIcon, PasswordIcon} from '../ui/icons';
 import {Button} from '../ui/button';

@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 
-import {TextArea} from '../../ui/text-area';
-import {Button} from '../../ui/button';
+import {TextArea} from '$components/ui/text-area';
+import {Button} from '$components/ui/button';
 
 import './create.less';
 

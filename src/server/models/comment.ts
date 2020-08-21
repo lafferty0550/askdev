@@ -1,21 +1,14 @@
 import {Schema, Document, model} from 'mongoose';
 
-import Validator from '../../common/helpers/validator';
+import {IComment} from '$common/types';
 
-export interface IComment extends Document {
-    body: string,
-    user: Schema.Types.ObjectId,
-    date: Date,
-    likes: number,
-    comments: IComment[]
-}
+export interface ICommentDoc extends Document, IComment {}
 
 const schema = new Schema({
     body: {
         type: String,
         required: true,
-        trim: true,
-        validate: [Validator.isComment, "Please fill the correct body of the comment"]
+        trim: true
     },
     user: {
         type: Schema.Types.ObjectId,
@@ -37,4 +30,4 @@ const schema = new Schema({
     }]
 });
 
-export default model<IComment>('comment', schema);
+export default model<ICommentDoc>('comment', schema);

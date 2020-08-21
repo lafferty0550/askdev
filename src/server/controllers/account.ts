@@ -1,87 +1,99 @@
 import {Request, Response} from 'express';
 
-import db from '../models';
-import Tools from '../tools';
+import db from '$models';
+import Tools from '$server/tools';
 import {
-    GetMeResponse, LoginData,
+    GetMeResponse,
+    IUser,
+    LoginData,
+    LoginPayload,
     LoginResponse,
     PatchMeResponse,
     RefreshTokenResponse,
+    RegisterPayload,
     RegisterResponse
-} from '../../common/types';
+} from '$common/types';
+import {JWTPayload, TokenType} from '$server/types';
+import {typedSend} from '$server/generics';
+import {INVALID_CREDENTIALS, INVALID_TOKEN, LOGIN_SUCCESS, REGISTER_SUCCESS, USER_DOES_NOT_EXIST} from '$server/constants';
 
-const refreshTokens = {} as {
-    [key: string]: LoginData
-};
+const refreshTokens = {} as { [key: string]: LoginData };
 
 export const login = async (req: Request, res: Response) => {
-    const {email, password} = req.body;
+    const _send = typedSend<LoginResponse>(res);
+    const {email, password} = <LoginPayload>req.body;
 
     try {
-        const user = await db.user.findOne({email}, {__v: 0});
+        const user: IUser = await db.user.findOne({email}, {__v: 0});
         if (!user)
-            return res.status(401).send({msg: 'user does not exist'} as LoginResponse);
-        const isMatch = Tools.compareHash(password, user.password as string);
-        if (!isMatch)
-            return res.status(401).send({msg: 'invalid credentials'} as LoginResponse);
+            return _send({msg: USER_DOES_NOT_EXIST}, 401);
 
-        const token = Tools.generateJWT('access', user.id);
-        const refreshToken = Tools.generateJWT('refresh', user.id);
+        const isMatch: boolean = Tools.compareHash(password, user.password);
+        if (!isMatch)
+            return _send({msg: INVALID_CREDENTIALS}, 401);
+
+        const token: string = Tools.generateJWT(TokenType.access, user._id);
+        const refreshToken: string = Tools.generateJWT(TokenType.refresh, user._id);
 
         const data: LoginData = {
-            user: {...user.toJSON(), password: undefined},
+            user: {...user, password: ''},
             token,
             refreshToken,
         };
         refreshTokens[refreshToken] = data;
-        res.send({data: data, msg: 'login successful'} as LoginResponse);
+        _send({data: data, msg: LOGIN_SUCCESS});
     } catch (err) {
-        res.status(401).send({msg: err.toString()} as LoginResponse);
+        _send({msg: err.toString()}, 401);
     }
 };
 
 export const register = async (req: Request, res: Response) => {
-    const {email, nickname, password} = req.body
+    const _send = typedSend<RegisterResponse>(res);
+    const {email, nickname, password} = <RegisterPayload>req.body
 
     try {
-        await new db.user({email, nickname, password: Tools.generateHash(password)}).save();
-        res.json({msg: 'register successful'} as RegisterResponse);
+        await db.user({email, nickname, password: Tools.generateHash(password)}).save();
+        _send({msg: REGISTER_SUCCESS});
     } catch (err) {
-        res.status(401).send({msg: err.toString()} as RegisterResponse);
+        _send({msg: err.toString()}, 401);
     }
 };
 
 export const refreshToken = (req: Request, res: Response) => {
+    const _send = typedSend<RefreshTokenResponse>(res);
     const {refreshToken} = req.body
+
     if (refreshToken && (refreshToken in refreshTokens))
-        res.send({data: {token: Tools.generateJWT('access', refreshTokens[refreshToken].user._id)}} as RefreshTokenResponse);
+        _send({data: {token: Tools.generateJWT(TokenType.access, refreshTokens[refreshToken].user._id)}});
     else {
-        res.status(404).json({msg: 'invalid refresh token'} as RefreshTokenResponse);
+        _send({msg: INVALID_TOKEN}, 401);
     }
 };
 
 export const getMe = async (req: Request, res: Response) => {
+    const _send = typedSend<GetMeResponse>(res);
     try {
-        const decoded: any = Tools.decodeJWT(req.headers['x-access-token'] as string);
-        const user = await db.user.findById(decoded.id, {__v: 0, password: 0});
-        res.send({data: {user}} as GetMeResponse);
+        const decoded: JWTPayload = Tools.decodeJWT(<string>req.headers['x-access-token']);
+        const user: IUser = await db.user.findById(decoded.id, {__v: 0, password: 0});
+        _send({data: {user}});
     } catch (err) {
-        res.status(401).send({msg: err.toString()} as GetMeResponse);
+        _send({msg: err.toString()}, 401);
     }
 };
 
 export const patchMe = async (req: Request, res: Response) => {
+    const _send = typedSend<PatchMeResponse>(res);
     const {changes} = req.body;
     try {
-        const decoded: any = Tools.decodeJWT(req.headers['x-access-token'] as string);
+        const decoded: JWTPayload = Tools.decodeJWT(<string>req.headers['x-access-token']);
 
         if (changes.password)
             changes.password = Tools.generateHash(changes.password);
         delete changes._id;
 
-        const user = await db.user.updateOne({_id: decoded.id}, {$set: changes});
-        res.send({data: {user}} as PatchMeResponse);
+        const user: IUser = await db.user.updateOne({_id: decoded.id}, {$set: changes});
+        _send({data: {user}});
     } catch (err) {
-        res.status(401).send({msg: err.toString()} as PatchMeResponse);
+        _send({msg: err.toString()}, 401);
     }
 };

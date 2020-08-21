@@ -1,20 +1,20 @@
 import React, {useContext, useEffect, useMemo} from 'react';
 
-import {AccountContext, AccountDispatchContext} from '../account/context';
-import {useFetch} from '../hooks/useFetch';
-import {GetMeData} from '../../common/types';
-import {API} from '../core/api';
-import {ACTION_TYPES} from '../account/reducer';
-import {Layout} from '../components/layout';
+import {AccountContext, AccountDispatchContext} from '$account/context';
+import {FetchResult, useFetch} from '$hooks/useFetch';
+import {GetMeData} from '$common/types';
+import {API} from '$core/api';
+import {ACTION_TYPES} from '$account/reducer';
+import {Layout} from '$components/layout';
 import {NavbarContainer} from './navbar';
-import {Content} from '../components/content/content';
-import {Sidebar} from '../components/sidebar';
+import {Content} from '$components/content/content';
+import {AccountDispatch, AccountState} from '$account/types';
 
 export const App = () => {
     // fetch user info
-    const {JWT} = useContext(AccountContext);
-    const dispatch = useContext(AccountDispatchContext);
-    const {pending, data, makeFetch} = useFetch<GetMeData>();
+    const {JWT}: AccountState = useContext(AccountContext);
+    const dispatch: AccountDispatch = useContext(AccountDispatchContext);
+    const {pending, data, makeFetch}: FetchResult<GetMeData> = useFetch<GetMeData>();
 
     useEffect(() => {
         if (JWT)

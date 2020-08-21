@@ -9,10 +9,10 @@ import {
     QuestionIcon,
     PlusIcon, SignOutIcon
 } from './ui/icons';
+import {LoadingWrapper} from './content/loading-wrapper';
+import {Pending} from '$hooks/useFetch';
 
 import './navbar.less';
-import {LoadingWrapper} from './content/loading-wrapper';
-import {Pending} from '../hooks/useFetch';
 
 type Props = {
     logout: () => void,

@@ -13,9 +13,13 @@ export const Sidebar = (() => {
     return (
         <div className={`sidebar ${!show ? 'sidebar-hidden' : 'sidebar-showed'}`}>
             <button className='sidebar__toggle'>
-                {show ? <div id='toggle' onClick={() => {
-                    setShow(false);
-                }}>{'>'}</div> : <div id='toggle' onClick={() => setShow(true)}>{'<'}</div>}
+                <div id='toggle' onClick={() => {
+                    if (show)
+                        setShow(false);
+                    else
+                        setShow(true);
+                }}>=
+                </div>
             </button>
             <div className='sidebar__sections'>
                 <div className='sidebar__section'>

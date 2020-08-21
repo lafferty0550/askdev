@@ -1,6 +1,6 @@
 import {Schema, Document, model} from 'mongoose';
 
-import {IQuestion} from '../../common/types';
+import {IQuestion} from '$common/types';
 
 export interface IQuestionDoc extends Document, IQuestion {}
 

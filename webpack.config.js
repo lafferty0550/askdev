@@ -23,7 +23,22 @@ const _initEntry = path.join(_init, '/launcher.ts')
 const _build = path.join(_root, '/build');
 const _output = path.join(_build, '/public');
 
-const aliases = {};
+const aliases = {
+    '$common': _common,
+
+    '$front': _front,
+    '$account': path.join(_front, 'account'),
+    '$components': path.join(_front, 'components'),
+    '$containers': path.join(_front, 'containers'),
+    '$core': path.join(_front, 'core'),
+    '$hooks': path.join(_front, 'hooks'),
+
+    '$server': _server,
+    '$controllers': path.join(_server, 'controllers'),
+    '$middlewares': path.join(_server, 'middlewares'),
+    '$models': path.join(_server, 'models'),
+    '$routes': path.join(_server, 'routes'),
+};
 
 rimraf(_output, () => console.log(`=========DELETED=========  ${_output}`));
 

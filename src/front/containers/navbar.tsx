@@ -1,9 +1,9 @@
 import React, {useContext} from 'react';
 
-import {Navbar} from '../components/navbar';
-import {AccountContext, AccountDispatchContext} from '../account/context';
-import {ACTION_TYPES} from '../account/reducer';
-import {Pending} from '../hooks/useFetch';
+import {Navbar} from '$components/navbar';
+import {AccountContext, AccountDispatchContext} from '$account/context';
+import {ACTION_TYPES} from '$account/reducer';
+import {Pending} from '$hooks/useFetch';
 
 type Props = {
     loginPending: Pending

@@ -1,7 +1,8 @@
-import {IUser} from '../../common/types';
+import {IUser} from '$common/types';
+import {ACTION_TYPES} from './reducer';
 
 export type Action = {
-    type: string,
+    type: ACTION_TYPES,
     user?: any,
     msg?: string,
     JWT?: string
@@ -12,3 +13,5 @@ export interface AccountState {
     about: IUser | null,
     JWT: string
 }
+
+export type AccountDispatch = (action: Action) => void;

@@ -18,6 +18,35 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react",
+    "baseUrl": "./src",
+    "paths": {
+      "$common": ["common"],
+      "$common/*": ["common/*"],
+
+      "$front": ["front"],
+      "$front/*": ["front/*"],
+      "$account": ["front/account"],
+      "$account/*": ["front/account/*"],
+      "$components": ["front/components"],
+      "$components/*": ["front/components/*"],
+      "$containers": ["front/containers"],
+      "$containers/*": ["front/containers/*"],
+      "$core": ["front/core"],
+      "$core/*": ["front/core/*"],
+      "$hooks": ["front/hooks"],
+      "$hooks/*": ["front/hooks/*"],
+
+      "$server": ["server"],
+      "$server/*": ["server/*"],
+      "$controllers": ["server/controllers"],
+      "$controllers/*": ["server/controllers/*"],
+      "$middlewares": ["server/middlewares"],
+      "$middlewares/*": ["server/middlewares/*"],
+      "$models": ["server/models"],
+      "$models/*": ["server/models/*"],
+      "$routes": ["server/routes"],
+      "$routes/*": ["server/routes/*"]
+    }
   },
   "include": [
     "src"

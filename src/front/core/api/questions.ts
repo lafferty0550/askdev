@@ -1,9 +1,9 @@
-import { AxiosResponse } from 'axios';
+import {AxiosResponse} from 'axios';
 
 import BaseAPI from './instance';
 import {
     GetQuestionResponse,
-    GetQuestionsResponse,
+    GetQuestionsResponse, PostQuestionPayload,
     PostQuestionResponse
 } from '../../../common/types';
 
@@ -18,8 +18,8 @@ export default class QuestionAPI extends BaseAPI {
         return res.data;
     }
 
-    public post = async (title: string, body: string): Promise<PostQuestionResponse> => {
-        const res: AxiosResponse = await this.instance.post('/questions', {title, body});
+    public post = async (question: PostQuestionPayload): Promise<PostQuestionResponse> => {
+        const res: AxiosResponse = await this.instance.post('/questions', question);
         return res.data;
     }
 }

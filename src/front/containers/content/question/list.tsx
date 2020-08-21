@@ -1,10 +1,10 @@
 import React, {useEffect, useMemo} from 'react';
 
-import {QuestionList} from '../../../components/content/question/list';
-import {useFetch} from '../../../hooks/useFetch';
-import {GetQuestionsData} from '../../../../common/types';
-import {API} from '../../../core/api';
-import {LoadingWrapper} from '../../../components/content/loading-wrapper';
+import {QuestionList} from '$components/content/question/list';
+import {useFetch} from '$hooks/useFetch';
+import {GetQuestionsData} from '$common/types';
+import {API} from '$core/api';
+import {LoadingWrapper} from '$components/content/loading-wrapper';
 
 export const QuestionListContainer = (() => {
     const {pending, success, data, msg, makeFetch} = useFetch<GetQuestionsData>();

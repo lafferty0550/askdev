@@ -1,5 +1,6 @@
 import axios, {AxiosInstance, AxiosResponse, AxiosError} from 'axios';
-import {RefreshTokenResponse} from '../../../common/types';
+
+import {RefreshTokenResponse} from '$common/types';
 
 export default class BaseAPI {
     protected instance: AxiosInstance;

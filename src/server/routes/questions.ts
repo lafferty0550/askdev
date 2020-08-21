@@ -1,8 +1,8 @@
-import express from 'express';
+import express, {Router} from 'express';
 
-import {getQuestions, getQuestion, postQuestion} from '../controllers/questions';
+import {getQuestions, getQuestion, postQuestion} from '$controllers/questions';
 
-const router = express.Router();
+const router: Router = express.Router();
 
 router.get('/', getQuestions);
 router.get('/:id', getQuestion);

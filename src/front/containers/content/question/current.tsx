@@ -1,10 +1,10 @@
 import React, {useEffect} from 'react';
 
-import {Current} from '../../../components/content/question/current';
-import {useFetch} from '../../../hooks/useFetch';
-import {GetQuestionData} from '../../../../common/types';
-import {API} from '../../../core/api';
-import {LoadingWrapper} from '../../../components/content/loading-wrapper';
+import {Current} from '$components/content/question/current';
+import {useFetch} from '$hooks/useFetch';
+import {GetQuestionData} from '$common/types';
+import {API} from '$core/api';
+import {LoadingWrapper} from '$components/content/loading-wrapper';
 
 type Props = {
     id: string
@@ -19,7 +19,7 @@ export const CurrentContainer = (({id}) => {
 
     return (
         <LoadingWrapper pending={pending} success={success}>
-            {data && <Current data={data.question}/>}
+            {data && <Current question={data.question}/>}
         </LoadingWrapper>
     );
 }) as React.FC<Props>;

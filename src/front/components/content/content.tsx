@@ -1,15 +1,15 @@
-import React, {useContext, useEffect} from 'react';
-import {Switch, Route, Redirect, RouteComponentProps, RouteProps} from 'react-router-dom';
+import React, {useContext} from 'react';
+import {Switch, Route, Redirect, RouteComponentProps} from 'react-router-dom';
 
-import {CreateContainer} from '../../containers/content/question/create';
+import {CreateContainer} from '$containers/content/question/create';
 import {Chat} from './chat';
 import {FAQ} from './faq';
 import {Tab, Tabs} from '../ui/tab';
-import {QuestionListContainer} from '../../containers/content/question/list';
-import {MyQuestionListContainer} from '../../containers/content/question/mine-list';
-import {AuthContainer} from '../../containers/content/auth';
-import {AccountContext} from '../../account/context';
-import {CurrentContainer} from '../../containers/content/question/current';
+import {QuestionListContainer} from '$containers/content/question/list';
+import {MyQuestionListContainer} from '$containers/content/question/mine-list';
+import {AuthContainer} from '$containers/content/auth';
+import {AccountContext} from '$account/context';
+import {CurrentContainer} from '$containers/content/question/current';
 
 import './content.less';
 import {Sidebar} from '../sidebar';

@@ -1,15 +1,12 @@
 import {AccountState, Action} from './types';
 
-export const ACTION_TYPES = {
-    SET_USER: 'account/SET_USER',
-    SET_JWT: 'account/SET_JWT',
-    LOGOUT: 'account/LOGOUT',
+export enum ACTION_TYPES {
+    'SET_USER',
+    'SET_JWT',
+    'LOGOUT'
+}
 
-    /*UPDATE_USER: 'account/UPDATE_USER',
-    UPDATE_JWT: 'account/UPDATE-JWT'*/
-};
-
-const JWT = localStorage.getItem('token') || '';
+const JWT: string = localStorage.getItem('token') || '';
 
 export const initialState: AccountState = {authorized: false, about: null, JWT};
 
@@ -32,22 +29,6 @@ export const reducer = (state = initialState, action: Action): AccountState => {
                 ...initialState,
                 authorized: false
             };
-
-
-        /*case ACTION_TYPES.UPDATE_USER:
-            return {
-                ...state,
-                about: {
-                    ...state.about,
-                    ...action.payload
-                }
-            };
-        case ACTION_TYPES.UPDATE_JWT:
-            return {
-                ...state,
-                JWT: action.payload
-            };*/
-
         default:
             return initialState;
     }
