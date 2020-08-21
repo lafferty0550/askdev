@@ -12,6 +12,7 @@ import {AccountContext} from '../../account/context';
 import {CurrentContainer} from '../../containers/content/question/current';
 
 import './content.less';
+import {Sidebar} from '../sidebar';
 
 export const Content = (() => {
     const {authorized} = useContext(AccountContext);
@@ -21,19 +22,22 @@ export const Content = (() => {
             <Switch>
                 <Route exact path='/questions/new' component={CreateContainer}/>
                 <Route exact path='/questions' render={() => (
-                    <Tabs>
-                        {/*
+                    <div className='content-container'>
+                        <Tabs>
+                            {/*
                             Because of Tabs component uses lazy load we need to pass the functions instead of
                             components to render it when needed.
                             I don't know is it dirty code or not but it seems pretty good :)
                         */}
-                        <Tab label='List'>
-                            {() => <QuestionListContainer/>}
-                        </Tab>
-                        <Tab label='Mine'>
-                            {() => <MyQuestionListContainer/>}
-                        </Tab>
-                    </Tabs>
+                            <Tab label='List'>
+                                {() => <QuestionListContainer/>}
+                            </Tab>
+                            <Tab label='Mine'>
+                                {() => <MyQuestionListContainer/>}
+                            </Tab>
+                        </Tabs>
+                        <Sidebar/>
+                    </div>
                 )}/>
                 <Route exact path='/questions/:id'
                        render={(props: RouteComponentProps<{ id: string }>) => <CurrentContainer

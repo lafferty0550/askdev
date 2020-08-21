@@ -13,7 +13,7 @@ type Props = {
 
 export const QuestionList = (({list}) => {
     return (
-        <div className='list'>
+        <div className='list container'>
             {list?.map((item: IQuestion) => (
                 <Link className='list-item' key={item._id} to={`/questions/${item._id}`}>
                     <div className='list-item__left-section'>

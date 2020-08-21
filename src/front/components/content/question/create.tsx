@@ -14,7 +14,7 @@ export const Create = (({accept}) => {
     const [body, setBody] = useState('');
 
     return (
-        <div className='new-question'>
+        <div className='new-question container'>
             <div className="new-question__title">Create a new question</div>
             <TextArea placeholder='Title of the question' className='new-question__title-area'
                       onChange={e => setTitle(e.target.value)}/>

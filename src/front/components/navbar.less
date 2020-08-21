@@ -6,13 +6,17 @@
 
 .navbar {
   background-color: @var-primary-color;
-  box-shadow: 0 0 @var-nav-shadow @var-nav-shadow @var-primary-color;
   font-size: 1.6rem;
   padding: 1.5em 0;
   max-width: 300px;
-  height: 100%;
 
   .flex(@align: center, @flex-direction: column);
+
+  @media (max-width: 768px) {
+    order: -1;
+
+    max-width: 100%;
+  }
 
   > *:not(:first-child) {
     margin-top: @var-nav-item-margin;
@@ -32,12 +36,15 @@
 
     font-size: 1.8rem;
     background-color: @var-secondary-color;
-    box-shadow: 0 0 @var-nav-shadow @var-nav-shadow @var-secondary-color;
-    //border-radius: 0.5em;
     height: 2em;
     width: 100%;
     transition: background-color .2s linear;
     color: white;
+
+    @media (max-width: 768px) {
+      max-width: 180px;
+      border-radius: 5px;
+    }
 
     &:hover {
       background-color: @var-secondary-dark-color;
