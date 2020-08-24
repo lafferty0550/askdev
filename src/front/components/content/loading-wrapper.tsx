@@ -1,7 +1,7 @@
 import React from 'react';
 
 import {Pending} from '$hooks/useFetch';
-import {Spinner} from '../ui/spinner';
+import {Spinner} from '../spinner';
 
 type Props = {
     pending: Pending,

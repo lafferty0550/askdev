@@ -1,28 +1,32 @@
 .tabs {
-  margin-top: 1rem;
+  margin-top: 1em;
   width: 100%;
   overflow-y: auto;
 
   &__list {
     display: flex;
     justify-content: center;
-    font-size: 2rem;
   }
 
   &__content {
     display: flex;
     justify-content: center;
 
-    margin-top: 1.6rem;
+    margin-top: 1.6em;
   }
 }
 
 .tab {
   cursor: pointer;
-  padding: 1rem 2rem;
+  font-size: 1em;
+  padding: .8em 1.2em;
   border: 1px solid #ddd;
 
   &-selected {
+    background-color: #ddd;
+  }
+  
+  &-active {
     background-color: #ddd;
   }
 }

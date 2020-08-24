@@ -1,48 +1,43 @@
 import axios, {AxiosInstance, AxiosResponse, AxiosError} from 'axios';
 
 import {RefreshTokenResponse} from '$common/types';
+import {JWT_EXPIRES} from '$server/constants';
+import {LocalStorage} from '$core/helpers/local-storage';
 
 export default class BaseAPI {
     protected instance: AxiosInstance;
-    protected secure_instance: AxiosInstance;
+    protected auth_instance: AxiosInstance;
+
+    private baseURL = `${window.location.origin}/api`;
 
     constructor() {
-        this.instance = axios.create({
-            baseURL: `${window.location.origin}/api`
-        });
+        this.instance = axios.create({baseURL: this.baseURL});
 
         // used if request needs JWT token
-        this.secure_instance = axios.create({
-            baseURL: `${window.location.origin}/api`,
-            headers: {
-                'x-access-token': localStorage.getItem('token')
-            }
-        });
-        this.secure_instance.interceptors.response.use(
+        this.auth_instance = axios.create({baseURL: this.baseURL, headers: {'x-access-token': LocalStorage.JWT}});
+        this.auth_instance.interceptors.response.use(
             (response: AxiosResponse) => response,
             async (error: AxiosError) => {
-                // TODO: make it better
                 // if response of the previous request is failed because of JWT expiration
                 // we need to refresh the token and repeat that one
-                if (error.response?.data.msg === 'TokenExpiredError: jwt expired') {
-                    try {
-                        const res: AxiosResponse<RefreshTokenResponse> = await this.instance.post('/account/token', {
-                            refreshToken: localStorage.getItem('refreshToken')
-                        });
-                        if (res.data.data) {
-                            localStorage.setItem('token', res.data.data.token);
-                            // repeat request
-                            const {config} = error;
-                            config.headers['x-access-token'] = res.data.data.token;
-                            return this.instance.request(config);
-                        } else return error;
-                    } catch (err) {
-                        localStorage.removeItem('token');
-                        localStorage.removeItem('refreshToken');
-                        return error;
+                if (error.response?.data.msg !== JWT_EXPIRES)
+                    return Promise.reject(error);
+
+                try {
+                    const res: AxiosResponse<RefreshTokenResponse> = await this.instance.post('/account/token', {
+                        refreshToken: LocalStorage.refreshJWT
+                    });
+                    if (res.data.data) {
+                        LocalStorage.JWT = res.data.data.token;
+                        // repeat request
+                        error.config.headers['x-access-token'] = res.data.data.token;
+                        return this.instance.request(error.config);
                     }
-                } else
-                    return error;
+                } catch (err) {
+                    LocalStorage.JWT = '';
+                    LocalStorage.refreshJWT = '';
+                    return Promise.reject(err);
+                }
             }
         )
     }

@@ -5,7 +5,7 @@ import db from '$server/models';
 import Validator from '$common/helpers/validator';
 import {IUser, LoginResponse, RegisterPayload} from '$common/types';
 import {typedSend} from '$server/generics';
-import {EMAIL_IS_ALREADY_EXISTS, NO_TOKEN, VALIDATION_FAILED} from '$constants';
+import {EMAIL_IS_ALREADY_EXISTS, JWT_EXPIRES, NO_TOKEN, VALIDATION_FAILED} from '$server/constants';
 
 export const checkEmail = async (req: Request, res: Response, next: NextFunction) => {
     const _send = typedSend<LoginResponse>(res);
@@ -43,6 +43,6 @@ export const checkJWT = (req: Request, res: Response, next: NextFunction) => {
         jwt.verify(token, process.env.TOKEN_SECRET || 'mysecretpassword');
         next();
     } catch (err) {
-        _send({msg: err.toString()}, 500);
+        _send({msg: JWT_EXPIRES}, 500);
     }
 };

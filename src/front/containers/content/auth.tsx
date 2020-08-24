@@ -2,47 +2,61 @@ import React, {useContext, useEffect, useState} from 'react';
 import {Redirect} from 'react-router-dom';
 
 import {API} from '$core/api';
-import {LoginData, RegisterData} from '$common/types';
-import {Pending, useFetch} from '$hooks/useFetch';
+import {LoginData, LoginPayload, RegisterData, RegisterPayload} from '$common/types';
+import {useFetch} from '$hooks/useFetch';
 import {LoadingWrapper} from '$components/content/loading-wrapper';
 import {Auth} from '$components/content/auth';
 import {AccountDispatchContext} from '$account/context';
 import {ACTION_TYPES} from '$account/reducer';
-import {UserInput} from '$core/api/account';
+import {LocalStorage} from '$core/helpers/local-storage';
+import {AccountDispatch} from '$account/types';
+import {useChangeEffect} from '$hooks/useChangeEffect';
 
 type Props = { isLogin: boolean };
 
 export const AuthContainer = (({isLogin}) => {
     const [redirect, setRedirect] = useState(false);
-    const {pending, success, msg, data, makeFetch} = isLogin ? useFetch<LoginData>() : useFetch<RegisterData>();
-    const dispatch = useContext(AccountDispatchContext);
+    if (isLogin) {
+        const {pending, success, msg, data, makeFetch} = useFetch<LoginData>();
+        const dispatch = useContext<AccountDispatch>(AccountDispatchContext);
 
-    useEffect(() => {
-        if (pending === Pending.fetched && success) {
-            if (isLogin) {
-                localStorage.setItem('token', data.token);
-                localStorage.setItem('refreshToken', data.refreshToken);
-                dispatch({type: ACTION_TYPES.SET_USER, user: data.user});
-                dispatch({type: ACTION_TYPES.SET_JWT, JWT: data.token});
-            }
+        useChangeEffect(() => {
+            if (!success) return;
+            LocalStorage.JWT = data!.token;
+            LocalStorage.refreshJWT = data!.refreshToken;
+            dispatch({type: ACTION_TYPES.SET_USER, user: data!.user});
             setRedirect(true);
-        }
-    }, [pending, success]);
+        }, [success, data]);
 
-    let handler: any;
-    if (isLogin)
-        handler = async (user: UserInput) =>
+        const handler = async (user: LoginPayload) =>
             await makeFetch(() => API.account.login(user));
-    else
-        handler = async (user: UserInput) =>
+
+        if (redirect)
+            return <Redirect to='/questions'/>;
+
+        return (
+            <LoadingWrapper pending={pending} success={success}>
+                <Auth login={handler} isLogin={true}/>
+            </LoadingWrapper>
+        )
+    } else {
+        const {pending, success, msg, makeFetch} = useFetch<RegisterData>();
+
+        useEffect(() => {
+            if (success)
+                setRedirect(true);
+        }, [success]);
+
+        const handler = async (user: RegisterPayload) =>
             await makeFetch(() => API.account.register(user));
 
-    if (redirect)
-        return <Redirect to={isLogin ? '/questions' : '/signin'}/>;
+        if (redirect)
+            return <Redirect to='/signin'/>;
 
-    return (
-        <LoadingWrapper pending={pending} success={success}>
-            <Auth handler={handler} isLogin={isLogin}/>
-        </LoadingWrapper>
-    )
+        return (
+            <LoadingWrapper pending={pending} success={success}>
+                <Auth register={handler} isLogin={false}/>
+            </LoadingWrapper>
+        )
+    }
 }) as React.FC<Props>;

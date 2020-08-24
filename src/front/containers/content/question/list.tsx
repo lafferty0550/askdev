@@ -14,6 +14,7 @@ export const QuestionListContainer = (() => {
     }, []);
 
     const QuestionListMemo = useMemo(() => <QuestionList list={data?.questions}/>, [data]);
+
     return (
         <LoadingWrapper pending={pending} success={success}>
             {QuestionListMemo}

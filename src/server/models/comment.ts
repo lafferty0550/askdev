@@ -23,11 +23,7 @@ const schema = new Schema({
         type: Number,
         required: true,
         default: 0
-    },
-    comments: [{
-        type: Schema.Types.ObjectId,
-        ref: 'comment'
-    }]
+    }
 });
 
 export default model<ICommentDoc>('comment', schema);

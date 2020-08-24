@@ -1,7 +1,6 @@
-@import url('../../variables');
+@import url('../variables');
 
 @var-select-padding: 5px;
-@var-select-title-size: 1.8rem + @var-select-padding * 2;
 @var-select-border: 5px;
 
 .select {
@@ -29,7 +28,7 @@
     position: absolute;
     background-color: @var-secondary-color;
     width: 100%;
-    top: @var-select-title-size;
+    top: calc(1em + 10px);
     border-radius: 0 0 @var-select-border @var-select-border;
 
     &-showed {

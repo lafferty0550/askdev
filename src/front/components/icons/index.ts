@@ -12,3 +12,4 @@ export {default as MagnifierIcon} from './magnifier';
 export {default as InfoIcon} from './info';
 export {default as LikeIcon} from './like';
 export {default as StarIcon} from './star';
+export {default as UserIcon} from './user';

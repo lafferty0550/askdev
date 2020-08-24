@@ -3,25 +3,24 @@ import {Redirect} from 'react-router-dom';
 
 import {Create} from '$components/content/question/create';
 import {API} from '$core/api';
-import {Pending, useFetch} from '$hooks/useFetch';
-import {PostQuestionData} from '$common/types';
+import {useFetch} from '$hooks/useFetch';
+import {PostQuestionData, PostQuestionPayload} from '$common/types';
 import {LoadingWrapper} from '$components/content/loading-wrapper';
+import {useChangeEffect} from '$hooks/useChangeEffect';
 
 export const CreateContainer = (() => {
     const [redirect, setRedirect] = useState(false);
     const {pending, success, msg, makeFetch} = useFetch<PostQuestionData>();
 
-    useEffect(() => {
-        if (pending === Pending.fetched && success)
-            setRedirect(true);
-    }, [pending, success]);
+    useChangeEffect(() => {
+        setRedirect(true);
+    }, [success]);
 
-    const postQuestion = (title: string, body: string) => {
-        makeFetch(() => API.questions.post({title, body})).then();
-    };
+    const postQuestion = (question: PostQuestionPayload) =>
+        makeFetch(() => API.questions.post(question)).then();
 
     if (redirect)
-        return <Redirect to='/questions'/>
+        return <Redirect to='/questions'/>;
 
     return (
         <LoadingWrapper pending={pending} success={success}>

@@ -1,13 +1,14 @@
 import {AxiosResponse} from 'axios';
 
 import BaseAPI from './instance';
-import {GetMeResponse, LoginPayload, LoginResponse, RegisterPayload, RegisterResponse} from '$common/types';
-
-export type UserInput = {
-    email: string,
-    nickname?: string,
-    password: string
-};
+import {
+    GetMeResponse,
+    LoginPayload,
+    LoginResponse,
+    PatchMePayload, PatchMeResponse,
+    RegisterPayload,
+    RegisterResponse
+} from '$common/types';
 
 export default class AccountAPI extends BaseAPI {
     public login = async (user: LoginPayload): Promise<LoginResponse> => {
@@ -19,7 +20,11 @@ export default class AccountAPI extends BaseAPI {
         return res.data;
     }
     public me = async (): Promise<GetMeResponse> => {
-        const res: AxiosResponse<GetMeResponse> = await this.secure_instance.get('/account/me');
+        const res: AxiosResponse<GetMeResponse> = await this.auth_instance.get('/account/me');
+        return res.data;
+    }
+    public updateMe = async (user: PatchMePayload): Promise<PatchMeResponse> => {
+        const res: AxiosResponse<PatchMeResponse> = await this.auth_instance.patch('/account/me', user);
         return res.data;
     }
 }

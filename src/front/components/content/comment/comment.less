@@ -1,0 +1,38 @@
+@import url('../../../variables.less');
+
+.comment {
+  display: flex;
+
+  & svg {
+    width: 1.2rem;
+    cursor: pointer;
+  }
+
+  &__likes {
+    display: flex;
+    align-items: center;
+    > span {
+      margin-left: .5rem;
+    }
+  }
+
+  &__text {
+    padding-left: 1rem;
+  }
+
+  &__user {
+    color: @var-primary-color;
+    cursor: pointer;
+  }
+
+  &__date {
+    margin-top: 0.2rem;
+    margin-left: 1rem;
+    font-size: 0.9em;
+    color: #ddd;
+  }
+
+  &__info {
+    display: flex;
+  }
+}

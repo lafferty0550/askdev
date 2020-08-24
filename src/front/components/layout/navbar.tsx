@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Link} from 'react-router-dom';
 
 import {
@@ -7,9 +7,9 @@ import {
     FAQIcon,
     ChatIcon,
     QuestionIcon,
-    PlusIcon, SignOutIcon
-} from './ui/icons';
-import {LoadingWrapper} from './content/loading-wrapper';
+    PlusIcon, SignOutIcon, UserIcon
+} from '../icons';
+import {LoadingWrapper} from '../content/loading-wrapper';
 import {Pending} from '$hooks/useFetch';
 
 import './navbar.less';
@@ -17,10 +17,14 @@ import './navbar.less';
 type Props = {
     logout: () => void,
     isAuth: boolean,
-    loginPending: Pending
+    loginPending: Pending,
+    path: string
 };
 
-export const Navbar = (({logout, isAuth, loginPending}) => (
+export const Navbar = (({logout, isAuth, loginPending, path}) => {
+    const [active, setActive] = useState(path);
+
+    return (
         <div className='navbar'>
             <Link className='navbar__logo' to='/questions'>
                 {'</>'}DevASK
@@ -30,15 +34,18 @@ export const Navbar = (({logout, isAuth, loginPending}) => (
                 ASK QUESTION
             </Link>
             <nav className='navbar__nav'>
-                <Link to='/questions'>
+                <Link to='/questions' onClick={() => setActive('/questions')}
+                      className={active === '/questions' ? 'active' : undefined}>
                     <QuestionIcon/>
                     Questions
                 </Link>
-                <Link to='/chat'>
+                <Link to='/chat' onClick={() => setActive('/chat')}
+                      className={active === '/chat' ? 'active' : undefined}>
                     <ChatIcon/>
                     Chat
                 </Link>
-                <Link to='/faq'>
+                <Link to='/faq' onClick={() => setActive('/faq')}
+                      className={active === '/faq' ? 'active' : undefined}>
                     <FAQIcon/>
                     FAQ
                 </Link>
@@ -47,6 +54,7 @@ export const Navbar = (({logout, isAuth, loginPending}) => (
                 {isAuth
                     ? (
                         <div className='navbar__footer'>
+                            <Link to='/profile'><UserIcon className='navbar__account'/></Link>
                             <Link to='/signin' onClick={logout}>
                                 <SignOutIcon/>
                                 Sign Out
@@ -68,5 +76,5 @@ export const Navbar = (({logout, isAuth, loginPending}) => (
                 }
             </LoadingWrapper>
         </div>
-    )
-) as React.FC<Props>;
+    );
+}) as React.FC<Props>;

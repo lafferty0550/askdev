@@ -31,10 +31,9 @@ export interface IQuestion {
 export interface IComment {
     _id: any,
     body: string,
-    user: Schema.Types.ObjectId,
+    user: IUser,
     date: Date,
-    likes: number,
-    comments: any
+    likes: number
 }
 
 /**
@@ -51,10 +50,11 @@ export type GetQuestionsData = { questions: IQuestion[] };
 export type GetQuestionData = { question: IQuestion };
 export type PostQuestionData = any;
 
-export type PostCommentData = any;
+export type PostCommentData = IComment;
+export type PostLikeData = { count: number };
 
 export type Data = LoginData | RegisterData | RefreshTokenData | GetMeData | PatchMeData | GetQuestionsData |
-    GetQuestionData | PostQuestionData | PostCommentData;
+    GetQuestionData | PostQuestionData | PostCommentData | PostLikeData;
 
 
 /**
@@ -72,10 +72,11 @@ export type GetQuestionsResponse = { data?: GetQuestionsData, msg?: string };
 export type GetQuestionResponse = { data?: GetQuestionData, msg?: string };
 export type PostQuestionResponse = { data?: PostQuestionData, msg: string };
 
-export type PostCommentResponse = { data?: any, msg: string };
+export type PostCommentResponse = { data?: PostCommentData, msg: string };
+export type PostLikeResponse = { data?: PostLikeData, msg: string };
 
 export type Response = LoginResponse | RegisterResponse | RefreshTokenResponse | GetMeResponse | PatchMeResponse |
-    GetQuestionsResponse | GetQuestionResponse | PostQuestionResponse | PostCommentResponse;
+    GetQuestionsResponse | GetQuestionResponse | PostQuestionResponse | PostCommentResponse | PostLikeResponse;
 
 
 /**
@@ -89,6 +90,8 @@ export type PostQuestionPayload = { title: string, body: string };
 
 export type PostCommentPayload = { body: string };
 
+export type PatchMePayload = { email?: string, nickname?: string, password?: string };
+
 
 /**
  * Post comment query
@@ -98,3 +101,4 @@ export type PostCommentPayload = { body: string };
  */
 
 export type PostCommentQuery = { target: string, id: string };
+export type PostLikeQuery = { target: string, id: string };

@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
 
-import {Select, Option} from './ui/select';
-import {Checkbox} from './ui/checkbox';
-import {Button} from './ui/button';
-import {MagnifierIcon} from './ui/icons';
+import {Select, Option} from '../select';
+import {Checkbox} from '../checkbox';
+import {Button} from '../button';
+import {MagnifierIcon} from '../icons';
 
 import './sidebar.less';
 
@@ -34,8 +34,8 @@ export const Sidebar = (() => {
                 <div className='sidebar__section'>
                     <div className='sidebar__section-title'>Filter settings</div>
                     <div className='sidebar__section-items'>
-                        <div className='sidebar__section-item sidebar__select'>
-                            <Select
+                        <div className='sidebar__section-item'>
+                            <Select className='sidebar__select'
                                 options={[{value: '0', title: 'Most popular'}, {value: '1', title: 'Most relevant'}, {
                                     value: '2',
                                     title: 'New'

@@ -7,7 +7,7 @@ import {
     IUser,
     LoginData,
     LoginPayload,
-    LoginResponse,
+    LoginResponse, PatchMePayload,
     PatchMeResponse,
     RefreshTokenResponse,
     RegisterPayload,
@@ -15,7 +15,13 @@ import {
 } from '$common/types';
 import {JWTPayload, TokenType} from '$server/types';
 import {typedSend} from '$server/generics';
-import {INVALID_CREDENTIALS, INVALID_TOKEN, LOGIN_SUCCESS, REGISTER_SUCCESS, USER_DOES_NOT_EXIST} from '$server/constants';
+import {
+    INVALID_CREDENTIALS,
+    INVALID_TOKEN,
+    LOGIN_SUCCESS,
+    REGISTER_SUCCESS, UPDATE_SUCCESS,
+    USER_DOES_NOT_EXIST
+} from '$server/constants';
 
 const refreshTokens = {} as { [key: string]: LoginData };
 
@@ -24,7 +30,7 @@ export const login = async (req: Request, res: Response) => {
     const {email, password} = <LoginPayload>req.body;
 
     try {
-        const user: IUser = await db.user.findOne({email}, {__v: 0});
+        const user: IUser = await db.user.findOne({email}, {__v: 0}).lean();
         if (!user)
             return _send({msg: USER_DOES_NOT_EXIST}, 401);
 
@@ -41,7 +47,7 @@ export const login = async (req: Request, res: Response) => {
             refreshToken,
         };
         refreshTokens[refreshToken] = data;
-        _send({data: data, msg: LOGIN_SUCCESS});
+        _send({data, msg: LOGIN_SUCCESS});
     } catch (err) {
         _send({msg: err.toString()}, 401);
     }
@@ -62,7 +68,6 @@ export const register = async (req: Request, res: Response) => {
 export const refreshToken = (req: Request, res: Response) => {
     const _send = typedSend<RefreshTokenResponse>(res);
     const {refreshToken} = req.body
-
     if (refreshToken && (refreshToken in refreshTokens))
         _send({data: {token: Tools.generateJWT(TokenType.access, refreshTokens[refreshToken].user._id)}});
     else {
@@ -74,7 +79,12 @@ export const getMe = async (req: Request, res: Response) => {
     const _send = typedSend<GetMeResponse>(res);
     try {
         const decoded: JWTPayload = Tools.decodeJWT(<string>req.headers['x-access-token']);
-        const user: IUser = await db.user.findById(decoded.id, {__v: 0, password: 0});
+        const user: IUser = await db.user.findById(decoded.id, {
+            __v: 0,
+            password: 0
+        }).populate('comments').populate('questions');
+        if (!user)
+            return _send({msg: USER_DOES_NOT_EXIST}, 401);
         _send({data: {user}});
     } catch (err) {
         _send({msg: err.toString()}, 401);
@@ -83,16 +93,15 @@ export const getMe = async (req: Request, res: Response) => {
 
 export const patchMe = async (req: Request, res: Response) => {
     const _send = typedSend<PatchMeResponse>(res);
-    const {changes} = req.body;
+    const changes: PatchMePayload = req.body;
     try {
         const decoded: JWTPayload = Tools.decodeJWT(<string>req.headers['x-access-token']);
 
         if (changes.password)
             changes.password = Tools.generateHash(changes.password);
-        delete changes._id;
 
         const user: IUser = await db.user.updateOne({_id: decoded.id}, {$set: changes});
-        _send({data: {user}});
+        _send({data: {user}, msg: UPDATE_SUCCESS});
     } catch (err) {
         _send({msg: err.toString()}, 401);
     }

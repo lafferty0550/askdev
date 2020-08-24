@@ -5,31 +5,42 @@ import './tab.less';
 type TabProps = {
     label: string,
     active?: boolean,
-    onClick?: (tab: string) => void
+    onClick?: (tab: string) => void,
+
+    className?: string
 };
 
-export const Tab = (({label, active, onClick = () => {}}) => {
-    let className = 'tab';
+export const Tab = (({label, active = false, className, onClick = () => {}}) => {
+    let classname = 'tab';
+
     if (active)
-        className += ' tab-active';
+        classname += ' tab-active';
+    if (className)
+        classname += className;
 
     return (
-        <div className={className} onClick={() => onClick(label)}>{label}</div>
+        <div className={classname} onClick={() => onClick(label)}>{label}</div>
     );
 }) as React.FC<TabProps>;
 
 type TabsProps = {
-    children: Array<ReactElement>
+    children: Array<ReactElement>,
+
+    className?: string
 };
 
-export const Tabs = (({children}) => {
+export const Tabs = (({children, className}) => {
     const [active, setActive] = useState(children[0].props.label);
 
+    let classname = 'tabs';
+    if (className)
+        classname += className;
+
     return (
-        <div className='tabs'>
+        <div className={classname}>
             <div className="tabs__list">
                 {children.map(child => (
-                    <Tab label={child.props.label} key={child.props.label} active={active}
+                    <Tab label={child.props.label} key={child.props.label} active={active === child.props.label}
                          onClick={(tab: string) => setActive(tab)}/>
                 ))}
             </div>

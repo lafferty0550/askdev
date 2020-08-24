@@ -10,7 +10,6 @@ router.post('/register', [checkEmail, validate], register);
 router.post('/token', refreshToken);
 
 router.get('/me', [checkJWT], getMe);
-
 router.patch('/me', [checkJWT], patchMe);
 
 export default router;

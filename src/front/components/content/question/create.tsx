@@ -1,12 +1,13 @@
 import React, {useState} from 'react';
 
-import {TextArea} from '$components/ui/text-area';
-import {Button} from '$components/ui/button';
+import {TextArea} from '$components/text-area';
+import {Button} from '$components/button';
 
 import './create.less';
+import {PostQuestionPayload} from '$common/types';
 
 type Props = {
-    accept: (title: string, body: string) => void
+    accept: (question: PostQuestionPayload) => void
 };
 
 export const Create = (({accept}) => {
@@ -22,7 +23,7 @@ export const Create = (({accept}) => {
                       className='new-question__body-area'
                       onChange={e => setBody(e.target.value)}/>
             <div className="new-question__actions">
-                <Button type='accept' onClick={() => accept(title, body)}>
+                <Button type='accept' onClick={() => accept({title, body})}>
                     Accept
                 </Button>
                 <Button type='cancel'>

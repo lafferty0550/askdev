@@ -2,20 +2,24 @@ import React, {useContext} from 'react';
 import {Switch, Route, Redirect, RouteComponentProps} from 'react-router-dom';
 
 import {CreateContainer} from '$containers/content/question/create';
-import {Chat} from './chat';
-import {FAQ} from './faq';
-import {Tab, Tabs} from '../ui/tab';
+import {Chat} from '$components/content/chat';
+import {FAQ} from '$components/content/faq';
+import {Tab, Tabs} from '$components/tab';
 import {QuestionListContainer} from '$containers/content/question/list';
-import {MyQuestionListContainer} from '$containers/content/question/mine-list';
+import {MyQuestionListContainer} from '$containers/content/question/mine';
 import {AuthContainer} from '$containers/content/auth';
 import {AccountContext} from '$account/context';
-import {CurrentContainer} from '$containers/content/question/current';
+import {QuestionContainer} from '$containers/content/question/question';
+import {ProfileContainer} from '$containers/content/profile';
+import {Sidebar} from '$components/layout/sidebar';
 
-import './content.less';
-import {Sidebar} from '../sidebar';
+import '$components/content/content.less';
 
 export const Content = (() => {
     const {authorized} = useContext(AccountContext);
+
+    const renderList = () => <QuestionListContainer/>;
+    const renderMine = () => <MyQuestionListContainer/>;
 
     return (
         <div className='content'>
@@ -24,24 +28,15 @@ export const Content = (() => {
                 <Route exact path='/questions' render={() => (
                     <div className='content-container'>
                         <Tabs>
-                            {/*
-                            Because of Tabs component uses lazy load we need to pass the functions instead of
-                            components to render it when needed.
-                            I don't know is it dirty code or not but it seems pretty good :)
-                        */}
-                            <Tab label='List'>
-                                {() => <QuestionListContainer/>}
-                            </Tab>
-                            <Tab label='Mine'>
-                                {() => <MyQuestionListContainer/>}
-                            </Tab>
+                            {/*Lazy load*/}
+                            <Tab label='List'>{renderList}</Tab>
+                            <Tab label='Mine'>{renderMine}</Tab>
                         </Tabs>
                         <Sidebar/>
                     </div>
                 )}/>
-                <Route exact path='/questions/:id'
-                       render={(props: RouteComponentProps<{ id: string }>) => <CurrentContainer
-                           id={props.match.params.id}/>}/>
+                <Route exact path='/questions/:id' render={(props: RouteComponentProps<{ id: string }>) =>
+                    <QuestionContainer id={props.match.params.id} showComments={true}/>}/>
                 <Route exact path='/chat' component={Chat}/>
                 <Route exact path='/faq' component={FAQ}/>
                 {!authorized && (
@@ -50,6 +45,7 @@ export const Content = (() => {
                         <Route exact path='/signup' component={() => <AuthContainer isLogin={false}/>}/>
                     </>
                 )}
+                <Route exact path='/profile' component={ProfileContainer}/>
                 <Redirect to='/questions'/>
             </Switch>
         </div>

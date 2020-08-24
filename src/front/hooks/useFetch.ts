@@ -10,11 +10,11 @@ export enum Pending {
     'fetched'
 }
 
-export type FetchResult<T> = {
+export type FetchResult<T = any> = {
     pending: Pending,
     success: boolean,
-    msg: string | undefined,
-    data: T | undefined,
+    msg?: string,
+    data?: T,
 
     makeFetch: (handler: APIHandler) => Promise<void>
 };

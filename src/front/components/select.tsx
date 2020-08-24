@@ -8,10 +8,11 @@ export type Option = {
 };
 
 type Props = {
-    options: Option[]
+    options: Option[],
+    className?: string
 };
 
-export const Select = (({options}) => {
+export const Select = (({options, className}) => {
     const [selected, setSelected] = useState({} as Option);
     const [show, setShow] = useState(false);
 
@@ -21,7 +22,8 @@ export const Select = (({options}) => {
     };
 
     return (
-        <div className='select' onMouseEnter={() => setShow(true)} onMouseLeave={() => setShow(false)}>
+        <div className={className ? `select ${className}` : 'select'} onMouseEnter={() => setShow(true)}
+             onMouseLeave={() => setShow(false)}>
             <div className='select-title'>
                 <svg viewBox='0 0 477.875 477.875'>
                     <path d='M460.804,0H17.071C7.645,0,0.004,7.641,0.004,17.067V102.4c0.001,4.836,2.054,9.445,5.649,12.681l165.018,148.514V460.8

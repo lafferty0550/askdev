@@ -1,13 +1,14 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 import dateFormat from 'dateformat';
-import {LikeIcon, StarIcon} from '$components/ui/icons';
+import {LikeIcon, StarIcon} from '$components/icons';
 
 import {IQuestion} from '$common/types';
 
 import './question.less';
+import {API} from '$core/api';
 
-export const Question = (({_id, title, body, date, likes, stars, className}) => {
+export const Question = (({question, className, like}) => {
     let classname = 'question';
     if (className)
         classname += ` ${className}`;
@@ -15,24 +16,24 @@ export const Question = (({_id, title, body, date, likes, stars, className}) => 
     return (
         <div className={classname}>
             <div className='question__left-section'>
-                <Link to={`/questions/${_id}`} className="question__title">
-                    {title}
+                <Link to={`/questions/${question._id}`} className="question__title">
+                    {question.title}
                 </Link>
-                <div className="question__body">{body}</div>
+                <div className="question__body">{question.body}</div>
                 <div className="question__date">
-                    {dateFormat(date, "dddd, mmmm dS, yyyy, h:MM:ss TT")}
+                    {dateFormat(question.date, "dddd, mmmm dS, yyyy, h:MM:ss TT")}
                 </div>
             </div>
             <div className='question__right-section'>
-                <div onClick={() => console.log('like icon')}>
+                <div onClick={() => like(question._id)}>
                     <LikeIcon/>
-                    <span>{likes}</span>
+                    <span>{question.likes}</span>
                 </div>
                 <div onClick={() => console.log('star icon')}>
                     <StarIcon/>
-                    <span>{stars}</span>
+                    <span>{question.stars}</span>
                 </div>
             </div>
         </div>
     );
-}) as React.FC<IQuestion & { className?: string }>;
+}) as React.FC<{ question: IQuestion, className?: string, like: (_id: string) => void }>;

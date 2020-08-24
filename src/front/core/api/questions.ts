@@ -5,7 +5,7 @@ import {
     GetQuestionResponse,
     GetQuestionsResponse, PostQuestionPayload,
     PostQuestionResponse
-} from '../../../common/types';
+} from '$common/types';
 
 export default class QuestionAPI extends BaseAPI {
     public getAll = async (): Promise<GetQuestionsResponse> => {
@@ -19,7 +19,7 @@ export default class QuestionAPI extends BaseAPI {
     }
 
     public post = async (question: PostQuestionPayload): Promise<PostQuestionResponse> => {
-        const res: AxiosResponse = await this.instance.post('/questions', question);
+        const res: AxiosResponse = await this.auth_instance.post('/questions', question);
         return res.data;
     }
 }

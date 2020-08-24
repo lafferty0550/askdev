@@ -1,19 +1,18 @@
-@import url('../../variables');
+@import url('../variables');
 
-@var-input-height: 3rem;
+@var-input-height: 3em;
 
 .input {
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
-
-  height: @var-input-height;
+  height: 3em;
 
   > .icon {
     background-color: @var-secondary-color;
-    height: 100%;
-    width: 3rem;
+    width: @var-input-height;
+    height: @var-input-height;
     border-radius: 3px 0 0 3px;
 
     display: flex;
@@ -27,11 +26,12 @@
   }
 
   > input {
-    height: 100%;
     outline: none;
     border: 1px solid #ddd;
     border-radius: 0 3px 3px 0;
-    padding: 1rem;
+    padding: 1em;
+    font-size: 1em;
+    height: @var-input-height;
   }
 
   &-error {
@@ -61,19 +61,19 @@
   justify-content: center;
 
   position: absolute;
-  bottom: -@var-input-height - 4px;
+  bottom: -@var-input-height;
 
   z-index: 1;
   background-color: #eee;
   width: fit-content;
-  height: fit-content;
-  padding: 1rem;
-  font-size: 1.2rem;
+  height: @var-input-height;
+  padding: 1em;
+  font-size: 0.9em;
   opacity: 0.5;
 
   > svg {
     fill: @var-primary-color;
-    width: 1.4rem;
+    width: 1.4em;
   }
 
   > span {
