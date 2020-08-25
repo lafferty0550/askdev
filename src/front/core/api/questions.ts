@@ -7,6 +7,9 @@ import {
     PostQuestionResponse
 } from '$common/types';
 
+/*
+    Question API
+ */
 export default class QuestionAPI extends BaseAPI {
     public getAll = async (): Promise<GetQuestionsResponse> => {
         const res: AxiosResponse = await this.instance.get('/questions');

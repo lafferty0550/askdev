@@ -15,14 +15,15 @@ import {Pending} from '$hooks/useFetch';
 import './navbar.less';
 
 type Props = {
-    logout: () => void,
-    isAuth: boolean,
-    loginPending: Pending,
-    path: string
+    isAuth: boolean,        // user auth status
+    loginPending: Pending,  // check if user is logging in now
+    path: string,           // current url
+
+    logout: () => void
 };
 
 export const Navbar = (({logout, isAuth, loginPending, path}) => {
-    const [active, setActive] = useState(path);
+    const [active, setActive] = useState(path); // show which link is active now
 
     return (
         <div className='navbar'>

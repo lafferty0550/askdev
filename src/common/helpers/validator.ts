@@ -1,17 +1,18 @@
 import {validate as isEmail} from 'isemail';
 
-type Validator = (text: string) => boolean;
+type ValidatorType = (text: string) => boolean;
 
-export default class {
-    static isEmail: Validator = text => {
+// Simple validator
+export class Validator {
+    static isEmail: ValidatorType = text => {
         return isEmail(text);
     }
 
-    static isNickname: Validator = text => {
+    static isNickname: ValidatorType = text => {
         return (text.length >= 5) && (text.length <= 16);
     }
 
-    static isPassword: Validator = text => {
+    static isPassword: ValidatorType = text => {
         return (text.length >= 5) && (text.length <= 32);
     }
 }

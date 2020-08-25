@@ -18,6 +18,7 @@ import '$components/content/content.less';
 export const Content = (() => {
     const {authorized} = useContext(AccountContext);
 
+    // for lazy load
     const renderList = () => <QuestionListContainer/>;
     const renderMine = () => <MyQuestionListContainer/>;
 

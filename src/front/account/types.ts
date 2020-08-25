@@ -8,8 +8,8 @@ export type Action = {
 };
 
 export interface AccountState {
-    authorized: boolean,
-    about: IUser | null
+    authorized: boolean, // auth status
+    about: IUser | null  // user info
 }
 
 export type AccountDispatch = (action: Action) => void;

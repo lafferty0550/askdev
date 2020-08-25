@@ -1,8 +1,8 @@
 import {AccountState, Action} from './types';
 
 export enum ACTION_TYPES {
-    'SET_USER',
-    'LOGOUT'
+    'SET_USER', // used when user logged successfuly
+    'LOGOUT' // used when logout
 }
 
 export const initialState: AccountState = {authorized: false, about: null};
@@ -17,8 +17,8 @@ export const reducer = (state = initialState, action: Action): AccountState => {
 
         case ACTION_TYPES.LOGOUT:
             return {
-                ...initialState,
-                authorized: false
+                authorized: false,
+                about: null
             };
         default:
             return initialState;

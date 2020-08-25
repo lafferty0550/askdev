@@ -5,6 +5,7 @@ import {AccountDispatch, AccountState} from './types';
 
 const initialContext: AccountState = {authorized: false, about: null};
 
+// dummy initial value for context
 const initialDispatchContext: AccountDispatch = () => {};
 
 export const AccountContext = createContext<AccountState>(initialContext);

@@ -1,8 +1,8 @@
 import React, {useContext, useEffect, useMemo} from 'react';
-import { Route } from 'react-router-dom';
+import { Route, RouteComponentProps } from 'react-router-dom';
 
-import {AccountContext, AccountDispatchContext} from '$account/context';
-import {FetchResult, useFetch} from '$hooks/useFetch';
+import {AccountDispatchContext} from '$account/context';
+import {useFetch} from '$hooks/useFetch';
 import {GetMeData} from '$common/types';
 import {API} from '$core/api';
 import {ACTION_TYPES} from '$account/reducer';
@@ -14,15 +14,16 @@ import {LocalStorage} from '$core/helpers/local-storage';
 import {useChangeEffect} from '$hooks/useChangeEffect';
 
 export const App = () => {
-    // fetch user info
     const dispatch: AccountDispatch = useContext(AccountDispatchContext);
     const {pending, data, makeFetch} = useFetch<GetMeData>();
 
     useEffect(() => {
+        // If user has JWT then we try to login
         if (LocalStorage.JWT)
             makeFetch(() => API.account.me()).then();
     }, []);
     useChangeEffect(() => {
+        // If user logged in then put his info into store
         dispatch({type: ACTION_TYPES.SET_USER, user: data!.user})
     }, [data]);
 
@@ -30,7 +31,8 @@ export const App = () => {
 
     return (
         <Layout>
-            <Route path='/' render={(props) => <NavbarContainer loginPending={pending} path={props.location.pathname}/>}>
+            <Route path='/' render={({location: {pathname}}: RouteComponentProps) =>
+                <NavbarContainer loginPending={pending} path={pathname}/>}>
             </Route>
             {ContentMemo}
         </Layout>
