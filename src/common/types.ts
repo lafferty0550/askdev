@@ -1,5 +1,3 @@
-import {Schema} from "mongoose";
-
 /**
  * Models
  */
@@ -13,6 +11,7 @@ export interface IUser {
 
     likedQuestions: IQuestion[],
     staredQuestions: IQuestion[],
+    likedComments: IComment[],
 
     questions: IQuestion[],
     comments: IComment[]
@@ -52,9 +51,10 @@ export type PostQuestionData = any;
 
 export type PostCommentData = IComment;
 export type PostLikeData = { count: number };
+export type PostStarData = { count: number };
 
 export type Data = LoginData | RegisterData | RefreshTokenData | GetMeData | PatchMeData | GetQuestionsData |
-    GetQuestionData | PostQuestionData | PostCommentData | PostLikeData;
+    GetQuestionData | PostQuestionData | PostCommentData | PostLikeData | PostStarData;
 
 
 /**
@@ -74,9 +74,11 @@ export type PostQuestionResponse = { data?: PostQuestionData, msg: string };
 
 export type PostCommentResponse = { data?: PostCommentData, msg: string };
 export type PostLikeResponse = { data?: PostLikeData, msg: string };
+export type PostStarResponse = { data?: PostStarData, msg: string };
 
 export type Response = LoginResponse | RegisterResponse | RefreshTokenResponse | GetMeResponse | PatchMeResponse |
-    GetQuestionsResponse | GetQuestionResponse | PostQuestionResponse | PostCommentResponse | PostLikeResponse;
+    GetQuestionsResponse | GetQuestionResponse | PostQuestionResponse | PostCommentResponse | PostLikeResponse |
+    PostStarResponse;
 
 
 /**
@@ -100,5 +102,6 @@ export type PatchMePayload = { email?: string, nickname?: string, password?: str
  * and ID is its ID
  */
 
-export type PostCommentQuery = { target: string, id: string };
-export type PostLikeQuery = { target: string, id: string };
+export type PostCommentQuery = { target: 'question' | 'comment', id: string };
+export type PostLikeQuery = { target: 'question' | 'comment', id: string };
+export type PostStarQuery = { target: 'question', id: string };

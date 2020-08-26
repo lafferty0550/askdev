@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 
-import {Button} from '$components/button';
+import {Button, ButtonType, Variant} from '$components/button';
 import {TextArea} from '$components/text-area';
 
 type Props = {
@@ -18,7 +18,7 @@ export const PostComment = (({post, className}) => {
     return (
         <div className={classname}>
             <TextArea onChange={e => setBody(e.target.value)}/>
-            <Button onClick={() => post(body)}>Add comment</Button>
+            <Button onClick={() => post(body)} variant={Variant.outlined}>Add comment</Button>
         </div>
     );
 }) as React.FC<Props>;

@@ -8,6 +8,10 @@ type Props = {
     onChange: (e: ChangeEvent<HTMLTextAreaElement>) => void
 };
 
-export const TextArea = (({className, placeholder, onChange}) => (
-   <textarea className={`text-area ${className}`} placeholder={placeholder} onChange={onChange}/>
-)) as React.FC<Props>;
+export const TextArea = (({className, placeholder, onChange}) => {
+    let cn = 'text-area';
+    if (className)
+        cn += ` ${className}`;
+
+    return <textarea className={cn} placeholder={placeholder} onChange={onChange}/>;
+}) as React.FC<Props>;

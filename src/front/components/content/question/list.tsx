@@ -11,7 +11,7 @@ type Props = {
 
 export const QuestionList = (({list}) => {
     return (
-        <div className='list container'>
+        <div className='list'>
             {list?.map((item: IQuestion) => <QuestionContainer question={item} key={item._id}/>)}
         </div>
     );

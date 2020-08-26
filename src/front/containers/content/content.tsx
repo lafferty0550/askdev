@@ -25,9 +25,8 @@ export const Content = (() => {
     return (
         <div className='content'>
             <Switch>
-                <Route exact path='/questions/new' component={CreateContainer}/>
                 <Route exact path='/questions' render={() => (
-                    <div className='content-container'>
+                    <div className='content-inner'>
                         <Tabs>
                             {/*Lazy load*/}
                             <Tab label='List'>{renderList}</Tab>
@@ -36,18 +35,25 @@ export const Content = (() => {
                         <Sidebar/>
                     </div>
                 )}/>
-                <Route exact path='/questions/:id' render={(props: RouteComponentProps<{ id: string }>) =>
-                    <QuestionContainer id={props.match.params.id} showComments={true}/>}/>
-                <Route exact path='/chat' component={Chat}/>
-                <Route exact path='/faq' component={FAQ}/>
-                {!authorized && (
-                    <>
-                        <Route exact path='/signin' component={() => <AuthContainer isLogin={true}/>}/>
-                        <Route exact path='/signup' component={() => <AuthContainer isLogin={false}/>}/>
-                    </>
-                )}
-                <Route exact path='/profile' component={ProfileContainer}/>
-                <Redirect to='/questions'/>
+                <Route path='*' render={() => (
+                    <div className='content-wrapper'>
+                        <Switch>
+                            <Route exact path='/questions/new' component={CreateContainer}/>
+                            <Route exact path='/questions/:id' render={(props: RouteComponentProps<{ id: string }>) =>
+                                <QuestionContainer id={props.match.params.id} showComments={true}/>}/>
+                            <Route exact path='/chat' component={Chat}/>
+                            <Route exact path='/faq' component={FAQ}/>
+                            {!authorized && (
+                                <>
+                                    <Route exact path='/signin' component={() => <AuthContainer isLogin={true}/>}/>
+                                    <Route exact path='/signup' component={() => <AuthContainer isLogin={false}/>}/>
+                                </>
+                            )}
+                            <Route exact path='/profile' component={ProfileContainer}/>
+                            <Redirect to='/questions'/>
+                        </Switch>
+                    </div>
+                )}/>
             </Switch>
         </div>
     );

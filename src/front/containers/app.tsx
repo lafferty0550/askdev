@@ -1,8 +1,8 @@
 import React, {useContext, useEffect, useMemo} from 'react';
-import { Route } from 'react-router-dom';
+import {Route} from 'react-router-dom';
 
-import {AccountContext, AccountDispatchContext} from '$account/context';
-import {FetchResult, useFetch} from '$hooks/useFetch';
+import {AccountDispatchContext} from '$account/context';
+import {Pending, useFetch} from '$hooks/useFetch';
 import {GetMeData} from '$common/types';
 import {API} from '$core/api';
 import {ACTION_TYPES} from '$account/reducer';
@@ -16,21 +16,30 @@ import {useChangeEffect} from '$hooks/useChangeEffect';
 export const App = () => {
     // fetch user info
     const dispatch: AccountDispatch = useContext(AccountDispatchContext);
-    const {pending, data, makeFetch} = useFetch<GetMeData>();
+    const {pending, success, data, makeFetch} = useFetch<GetMeData>();
 
+    // if user has JWT then try to login
     useEffect(() => {
         if (LocalStorage.JWT)
             makeFetch(() => API.account.me()).then();
     }, []);
     useChangeEffect(() => {
-        dispatch({type: ACTION_TYPES.SET_USER, user: data!.user})
-    }, [data]);
+        if (pending === Pending.fetched) {
+            // if JWT is not valid then remove tokens
+            if (!success)
+                LocalStorage.cleanup();
+            // if JWT is valid then put user info into store
+            else
+                dispatch({type: ACTION_TYPES.SET_USER, user: data!.user})
+        }
+    }, [pending, success, data]);
 
     const ContentMemo = useMemo(() => <Content/>, []);
 
     return (
         <Layout>
-            <Route path='/' render={(props) => <NavbarContainer loginPending={pending} path={props.location.pathname}/>}/>
+            <Route path='/'
+                   render={(props) => <NavbarContainer loginPending={pending} path={props.location.pathname}/>}/>
             {ContentMemo}
         </Layout>
     );

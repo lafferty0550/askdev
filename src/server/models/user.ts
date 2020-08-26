@@ -28,6 +28,10 @@ const schema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'question'
     }],
+    likedComments: [{
+        type: Schema.Types.ObjectId,
+        ref: 'comment'
+    }],
 
     questions: [{
         type: Schema.Types.ObjectId,
@@ -38,5 +42,7 @@ const schema = new Schema({
         ref: 'comment'
     }]
 });
+
+schema.plugin(require('mongoose-autopopulate'));
 
 export default model<IUserDoc>('user', schema);

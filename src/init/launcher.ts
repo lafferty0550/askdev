@@ -1,16 +1,14 @@
 import mongoose from 'mongoose';
 
-if (process.env.mode === 'development')
-    require('dotenv').config();
-
 import Generator from './db-generator';
 import db from '../server/models';
+import {MONGODB_URI} from '$server/constants';
 
 (async () => {
     console.log('INITIALIZATING DATABASE BY DEFAULT VALUES...');
 
     try {
-        await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/askdev', {
+        await mongoose.connect(process.env.MONGODB_URI || MONGODB_URI, {
             useNewUrlParser: true,
             useUnifiedTopology: true
         });

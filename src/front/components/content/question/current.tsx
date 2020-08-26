@@ -4,20 +4,21 @@ import {IComment, IQuestion, PostCommentData, PostCommentPayload, PostCommentQue
 import {useFetch} from '$hooks/useFetch';
 import {API} from '$core/api';
 import {Question} from './question';
-import {Comment} from '../comment/comment';
 import {PostComment} from '../comment/post-comment';
 import {LoadingWrapper} from '$components/content/loading-wrapper';
+import {CommentContainer} from '$containers/content/comment/comment';
 
 import './current.less';
 
 type Props = {
     question: IQuestion,
     like: (_id: string) => void,
+    star: (_id: string) => void,
 
     showComments?: boolean
 };
 
-export const Current = (({question, like, showComments}) => {
+export const Current = (({question, like, star, showComments}) => {
     const [isShown, showCommentForm] = useState(false);
     const [showAll, showAllComments] = useState(false);
     const [comments, setComments] = useState<IComment[]>(question.comments);
@@ -39,17 +40,17 @@ export const Current = (({question, like, showComments}) => {
 
     return (
         <div className='current'>
-            <Question question={question} like={like}/>
+            <Question question={question} like={like} star={star}/>
             {showComments ? (
                 <LoadingWrapper pending={pending}>
                     <div className="current__comments">
                         {(!showAll ? comments.slice(0, 3) : comments).map(((comment: IComment) =>
-                            <Comment {...comment} className='current__comment' key={comment._id}/>)
+                            <CommentContainer comment={comment} className='current__comment' key={comment._id}/>)
                         )}
-                        <div onClick={() => showAllComments(!showAll)} className='current__btn'>
+                        <span onClick={() => showAllComments(!showAll)} className='current__btn'>
                             {showAll ? 'Hide' : 'Show more'}
-                        </div>
-                        <div onClick={() => showCommentForm(true)} className='current__btn'>Add a comment</div>
+                        </span>
+                        <span onClick={() => showCommentForm(true)} className='current__btn'>Add a comment</span>
                         {isShown ? (<PostComment post={postComment} className='current__post'/>) : null}
                     </div>
                 </LoadingWrapper>

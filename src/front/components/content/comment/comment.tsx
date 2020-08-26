@@ -6,10 +6,16 @@ import {LikeIcon} from '$components/icons';
 
 import './comment.less';
 
-export const Comment = (({body, user, date, likes, className}) => (
+type Props = {
+    comment: IComment,
+    like: () => void,
+    className?: string
+};
+
+export const Comment = (({comment: {body, user, date, likes}, like, className}) => (
     <div className={className ? `comment ${className}` : 'comment'}>
         <div className="comment__likes">
-            <LikeIcon/>
+            <LikeIcon onClick={like}/>
             <span>{likes}</span>
         </div>
         <div className="comment__text">
@@ -20,4 +26,4 @@ export const Comment = (({body, user, date, likes, className}) => (
             </div>
         </div>
     </div>
-)) as React.FC<IComment & { className?: string }>;
+)) as React.FC<Props>;

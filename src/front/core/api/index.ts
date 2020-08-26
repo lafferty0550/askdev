@@ -2,6 +2,7 @@ import AccountAPI from './account';
 import QuestionAPI from './questions';
 import CommentAPI from './comments';
 import LikeAPI from './likes';
+import StarAPI from './stars';
 
 import {Response} from '$common/types';
 
@@ -11,5 +12,6 @@ export const API = {
     account: new AccountAPI(),
     questions: new QuestionAPI(),
     comments: new CommentAPI(),
-    likes: new LikeAPI()
+    likes: new LikeAPI(),
+    stars: new StarAPI()
 };

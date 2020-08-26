@@ -15,7 +15,7 @@ const schema = new Schema({
         required: true,
         trim: true
     },
-    date: {
+    date: { // date when this question was posted
         type: Date,
         required: true
     },
@@ -32,5 +32,7 @@ const schema = new Schema({
         ref: 'comment'
     }]
 });
+
+schema.plugin(require('mongoose-autopopulate'));
 
 export default model<IQuestionDoc>('question', schema);

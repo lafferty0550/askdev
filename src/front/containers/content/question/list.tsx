@@ -7,7 +7,7 @@ import {API} from '$core/api';
 import {LoadingWrapper} from '$components/content/loading-wrapper';
 
 export const QuestionListContainer = (() => {
-    const {pending, success, data, msg, makeFetch} = useFetch<GetQuestionsData>();
+    const {pending, data, makeFetch} = useFetch<GetQuestionsData>();
 
     useEffect(() => {
         // fetch data when component did mount
@@ -17,7 +17,7 @@ export const QuestionListContainer = (() => {
     const QuestionListMemo = useMemo(() => <QuestionList list={data?.questions}/>, [data]);
 
     return (
-        <LoadingWrapper pending={pending} success={success}>
+        <LoadingWrapper pending={pending}>
             {QuestionListMemo}
         </LoadingWrapper>
     );

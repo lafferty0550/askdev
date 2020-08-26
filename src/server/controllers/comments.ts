@@ -14,9 +14,13 @@ export const postComment = async (req: Request, res: Response) => {
         const {body}: PostCommentPayload = req.body;
         const token = <string>req.headers['x-access-token'];
 
+        // find user
         const userID: string = Tools.getUserIdFromJWT(token);
+        // create comment
         const comment: ICommentDoc = await db.comment.create({body, user: userID, date: new Date()});
+        // add comment to user comments
         await db.user.updateOne({_id: userID}, {$push: {comments: comment._id}});
+        // add comment to target
         await db[target].updateOne({_id: id}, {$push: {comments: comment._id}});
         _send({data: await comment.populate('user').execPopulate(), msg: POST_SUCCESS});
     } catch (err) {

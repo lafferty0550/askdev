@@ -7,7 +7,14 @@ import {IQuestion} from '$common/types';
 
 import './question.less';
 
-export const Question = (({question, className, like}) => {
+type Props = {
+    question: IQuestion,
+    className?: string,
+    like: (_id: string) => void,
+    star: (_id: string) => void
+};
+
+export const Question = (({question, className, like, star}) => {
     let classname = 'question';
     if (className)
         classname += ` ${className}`;
@@ -24,15 +31,15 @@ export const Question = (({question, className, like}) => {
                 </div>
             </div>
             <div className='question__right-section'>
-                <div onClick={() => like(question._id)}>
-                    <LikeIcon/>
+                <div>
+                    <LikeIcon onClick={() => like(question._id)}/>
                     <span>{question.likes}</span>
                 </div>
-                <div onClick={() => console.log('star icon')}>
-                    <StarIcon/>
+                <div>
+                    <StarIcon onClick={() => star(question._id)}/>
                     <span>{question.stars}</span>
                 </div>
             </div>
         </div>
     );
-}) as React.FC<{ question: IQuestion, className?: string, like: (_id: string) => void }>;
+}) as React.FC<Props>;

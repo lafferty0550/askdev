@@ -2,13 +2,13 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import {JWTPayload, TokenType} from './types';
 
-const {TOKEN_SECRET, JWT_EXPIRES, JWT_REFRESH_EXPIRES} = process.env;
+import {TOKEN_SECRET, JWT_EXP, JWT_REFRESH_EXP} from './constants';
 
 export default class Tools {
     static generateJWT = (type: TokenType, id: string): string => {
         return jwt.sign({id},
-            TOKEN_SECRET || 'mysecretpassword',
-            {expiresIn: Number(((type === TokenType.access) ? JWT_EXPIRES : JWT_REFRESH_EXPIRES) || 900)}
+            TOKEN_SECRET,
+            {expiresIn: Number((type === TokenType.access) ? JWT_EXP : JWT_REFRESH_EXP)}
         );
     }
 

@@ -8,21 +8,41 @@
   border-radius: 5px;
   cursor: pointer;
   padding: .8em 2em;
-  transition: all .2s linear;
+  transition: all .3s linear;
 
   &.primary {
-    transition: all .2s linear;
     background-color: @var-primary-color;
-    &-dark, &:hover {
+    &:hover {
       background-color: @var-primary-dark-color;
+    }
+
+    &.outlined {
+      color: @var-primary-color;
+      border: 1px solid @var-primary-color;
+      background-color: white;
+
+      &:hover {
+        background-color: @var-primary-color;
+        color: white;
+      }
     }
   }
 
   &.secondary {
-    transition: all .2s linear;
     background-color: @var-secondary-color;
-    &-dark, &:hover {
+    &:hover {
       background-color: @var-secondary-dark-color;
+    }
+
+    &.outlined {
+      color: @var-secondary-color;
+      border: 1px solid @var-secondary-color;
+      background-color: white;
+
+      &:hover {
+        background-color: @var-secondary-color;
+        color: white;
+      }
     }
   }
 

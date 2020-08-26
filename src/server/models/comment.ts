@@ -15,7 +15,7 @@ const schema = new Schema({
         required: true,
         ref: 'user'
     },
-    date: {
+    date: { // date when this comment was posted
         type: Date,
         required: true
     },
@@ -25,5 +25,7 @@ const schema = new Schema({
         default: 0
     }
 });
+
+schema.plugin(require('mongoose-autopopulate'));
 
 export default model<ICommentDoc>('comment', schema);

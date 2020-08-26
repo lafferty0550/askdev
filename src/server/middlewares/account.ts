@@ -5,7 +5,12 @@ import db from '$server/models';
 import {Validator} from '$common/helpers/validator';
 import {IUser, LoginResponse, RegisterPayload} from '$common/types';
 import {typedSend} from '$server/generics';
-import {EMAIL_IS_ALREADY_EXISTS, JWT_EXPIRES, NO_TOKEN, VALIDATION_FAILED} from '$server/constants';
+import {EMAIL_IS_ALREADY_EXISTS, JWT_EXPIRES, NO_TOKEN, VALIDATION_FAILED, TOKEN_SECRET} from '$server/constants';
+
+/**
+ * checkEmail middleware checks if user with the given e-mail is already exist
+ * used while signing up only
+ */
 
 export const checkEmail = async (req: Request, res: Response, next: NextFunction) => {
     const _send = typedSend<LoginResponse>(res);
@@ -19,11 +24,17 @@ export const checkEmail = async (req: Request, res: Response, next: NextFunction
     }
 };
 
+/**
+ * validate middleware checks are email, nickname and password valid
+ * used while signing in and signing up
+ */
+
 export const validate = async (req: Request, res: Response, next: NextFunction) => {
     const _send = typedSend<LoginResponse>(res);
     const {email, nickname, password}: RegisterPayload = req.body;
 
     const isEmailValid: boolean = Validator.isEmail(email);
+    // if login, nickname does not exist
     const isNicknameValid: boolean = nickname ? Validator.isNickname(nickname) : true;
     const isPasswordValid: boolean = Validator.isPassword(password);
 
@@ -31,6 +42,11 @@ export const validate = async (req: Request, res: Response, next: NextFunction) 
         next();
     else _send({msg: VALIDATION_FAILED}, 401);
 };
+
+/**
+ * checkJWT middleware checks does JWT exist and is valid
+ * used in secure routes
+ */
 
 export const checkJWT = (req: Request, res: Response, next: NextFunction) => {
     const _send = typedSend<LoginResponse>(res);
@@ -40,7 +56,7 @@ export const checkJWT = (req: Request, res: Response, next: NextFunction) => {
         return _send({msg: NO_TOKEN}, 401);
 
     try {
-        jwt.verify(token, process.env.TOKEN_SECRET || 'mysecretpassword');
+        jwt.verify(token, TOKEN_SECRET);
         next();
     } catch (err) {
         _send({msg: JWT_EXPIRES}, 500);

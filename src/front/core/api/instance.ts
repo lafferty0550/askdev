@@ -1,4 +1,4 @@
-import axios, {AxiosInstance, AxiosResponse, AxiosError} from 'axios';
+import axios, {AxiosInstance, AxiosResponse, AxiosError, AxiosRequestConfig} from 'axios';
 
 import {RefreshTokenResponse} from '$common/types';
 import {JWT_EXPIRES} from '$server/constants';
@@ -10,22 +10,21 @@ import {LocalStorage} from '$core/helpers/local-storage';
 export default class BaseAPI {
     protected instance: AxiosInstance;
     protected auth_instance: AxiosInstance;
-
-    private baseURL = `${window.location.origin}/api`;
+    private config = {
+        baseURL: `${window.location.origin}/api`
+    };
 
     constructor() {
-        this.instance = axios.create({baseURL: this.baseURL});
-
+        this.instance = axios.create(this.config);
         // used when request needs JWT token
-        this.auth_instance = axios.create({baseURL: this.baseURL, headers: {'x-access-token': LocalStorage.JWT}});
+        this.auth_instance = axios.create(this.config);
         /**
          *  because of LocalStorage.JWT can be changed at any time we need to
-         take its info every request and put in headers...
-         Consider to use:
-         this.auth_instance.interceptors.request.use((config) => {
-                return {...config, headers: {...config.headers, 'x-access-token': LocalStorage.JWT}};
-            });
+            take its info and put it in headers every request...
          */
+        this.auth_instance.interceptors.request.use((config: AxiosRequestConfig) => {
+            return {...config, headers: {...config.headers, 'x-access-token': LocalStorage.JWT}};
+        });
         this.auth_instance.interceptors.response.use(
             (response: AxiosResponse) => response,
             async (error: AxiosError) => {

@@ -4,7 +4,6 @@ const nodeExternals = require('webpack-node-externals');
 const nodemon = require('nodemon');
 const webpack = require('webpack');
 const rimraf = require('rimraf');
-require('dotenv').config();
 
 const ENV = process.env.NODE_ENV || 'production';
 

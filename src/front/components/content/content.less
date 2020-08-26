@@ -1,6 +1,7 @@
 .content {
   display: flex;
   justify-content: center;
+
   width: 100%;
   font-size: 1.6rem;
 
@@ -12,13 +13,19 @@
     overflow-y: hidden;
   }
 
-  &-container {
-    display: flex;
+  &-wrapper {
+    width: 80%;
+    height: 90%;
+    margin: auto auto;
+  }
+}
 
-    width: 100%;
+.content-inner {
+  display: flex;
 
-    @media (max-width: 768px) {
-      flex-direction: column-reverse;
-    }
+  width: 100%;
+
+  @media (max-width: 768px) {
+    flex-direction: column-reverse;
   }
 }

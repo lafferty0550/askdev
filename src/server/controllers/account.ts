@@ -79,10 +79,9 @@ export const getMe = async (req: Request, res: Response) => {
     const _send = typedSend<GetMeResponse>(res);
     try {
         const decoded: JWTPayload = Tools.decodeJWT(<string>req.headers['x-access-token']);
-        const user: IUser = await db.user.findById(decoded.id, {
-            __v: 0,
-            password: 0
-        }).populate('comments').populate('questions');
+        const user: IUser = await db.user.findById(decoded.id, {__v: 0, password: 0})
+            .populate('questions').populate('comments').populate('likedQuestions')
+            .populate('likedComments').populate('staredQuestions');
         if (!user)
             return _send({msg: USER_DOES_NOT_EXIST}, 401);
         _send({data: {user}});

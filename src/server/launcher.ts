@@ -4,9 +4,7 @@ import path from 'path';
 import bodyParser from 'body-parser';
 
 import router from './routes';
-
-if (process.env.NODE_ENV !== 'production')
-    require('dotenv').config();
+import {MONGODB_URI, PORT} from '$server/constants';
 
 const app = express();
 
@@ -14,10 +12,14 @@ app.use(bodyParser.json());
 app.use('/api', router);
 app.use(express.static(path.resolve('build', 'public')));
 
+/**
+ * process.env.MONGODB_URI and process.env.PORT used by heroku app
+ */
+
 (async () => {
     try {
         if (typeof process.env.NODE_ENV !== 'undefined') {
-            await mongoose.connect(process.env.MONGODB_URI as string, {
+            await mongoose.connect(<string>process.env.MONGODB_URI || MONGODB_URI, {
                 useNewUrlParser: true,
                 useUnifiedTopology: true
             });
@@ -29,4 +31,4 @@ app.use(express.static(path.resolve('build', 'public')));
     }
 })();
 
-app.listen(process.env.PORT, () => console.log(`Listening on port ${process.env.PORT}`));
+app.listen(process.env.PORT || PORT, () => console.log(`Listening on port ${process.env.PORT}`));

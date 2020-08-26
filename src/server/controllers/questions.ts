@@ -15,9 +15,7 @@ export const getQuestions = async (req: Request, res: Response) => {
     try {
         const questions: IQuestion[] = await db.question.find({}, {__v: 0}).populate({
             path: 'comments',
-            populate: {
-                path: 'user'
-            }
+            populate: {path: 'user'}
         });
         _send({data: {questions}});
     } catch (err) {

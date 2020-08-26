@@ -54,7 +54,7 @@ export const AuthContainer = (({isLogin}) => {
             return <Redirect to='/signin'/>;
 
         return (
-            <LoadingWrapper pending={pending} success={success}>
+            <LoadingWrapper pending={pending}>
                 <Auth register={handler} isLogin={false}/>
             </LoadingWrapper>
         )
