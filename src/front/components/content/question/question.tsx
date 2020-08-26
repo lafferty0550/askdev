@@ -6,7 +6,6 @@ import {LikeIcon, StarIcon} from '$components/icons';
 import {IQuestion} from '$common/types';
 
 import './question.less';
-import {API} from '$core/api';
 
 export const Question = (({question, className, like}) => {
     let classname = 'question';

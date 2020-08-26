@@ -18,7 +18,7 @@ export const PostComment = (({post, className}) => {
     return (
         <div className={classname}>
             <TextArea onChange={e => setBody(e.target.value)}/>
-            <Button type='accept' onClick={() => post(body)}>Add comment</Button>
+            <Button onClick={() => post(body)}>Add comment</Button>
         </div>
     );
 }) as React.FC<Props>;

@@ -3,14 +3,11 @@ import React from 'react';
 import {Pending} from '$hooks/useFetch';
 import {Spinner} from '../spinner';
 
-type Props = {
-    pending: Pending,
-    success: boolean
-}
+type Props = { pending: Pending }
 
 import './loading-wrapper.less';
 
-export const LoadingWrapper = (({pending, success, children}) => (
+export const LoadingWrapper = (({pending = true, children}) => (
     <>
         {(pending === Pending.fetching) ? (
             <div className="loading">

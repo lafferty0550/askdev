@@ -1,8 +1,8 @@
-.flex(@justify: flex-start, @align: flex-start, @flex-direction: row) {
-  display: flex;
+.flex(@justify: flex-start, @align: flex-start, @direction: row, @type: flex) {
+  display: @type;
   justify-content: @justify;
   align-items: @align;
-  flex-direction: @flex-direction;
+  flex-direction: @direction;
 }
 
 .link {

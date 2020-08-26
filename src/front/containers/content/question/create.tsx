@@ -23,7 +23,7 @@ export const CreateContainer = (() => {
         return <Redirect to='/questions'/>;
 
     return (
-        <LoadingWrapper pending={pending} success={success}>
+        <LoadingWrapper pending={pending}>
             <Create accept={postQuestion}/>
         </LoadingWrapper>
     );

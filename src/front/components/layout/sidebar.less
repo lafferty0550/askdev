@@ -75,7 +75,7 @@
   }
 
   &__section {
-    .flex(@align: center, @flex-direction: column);
+    .flex(@align: center, @direction: column);
   }
 
   &__section-title {
@@ -129,13 +129,11 @@
   }
 
   &__actions {
-    .flex(@align: center, @flex-direction: column);
+    .flex(@align: center, @direction: column);
     width: 80%;
 
     > div {
-      width: 100%;
       margin-top: 1rem;
-      height: 4rem;
     }
   }
 }

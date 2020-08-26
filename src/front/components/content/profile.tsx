@@ -36,7 +36,7 @@ export const Profile = (({email, nickname, password, setEmail, setNickname, setP
             </div>
         </div>
         <div className='profile__actions'>
-            <Button onClick={save} type='accept'>Save</Button>
+            <Button onClick={save} fullWidth={true}>Save</Button>
         </div>
     </div>
 )) as React.FC<Props>;

@@ -6,7 +6,7 @@ import {LocalStorage} from '$core/helpers/local-storage';
 
 export default class BaseAPI {
     protected instance: AxiosInstance;
-    protected auth_instance: AxiosInstance;
+    public auth_instance: AxiosInstance;
 
     private baseURL = `${window.location.origin}/api`;
 

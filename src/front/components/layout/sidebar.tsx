@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
 
-import {Select, Option} from '../select';
+import {Option, Select} from '../select';
 import {Checkbox} from '../checkbox';
-import {Button} from '../button';
+import {Button, ButtonType} from '../button';
 import {MagnifierIcon} from '../icons';
 
 import './sidebar.less';
@@ -51,12 +51,8 @@ export const Sidebar = (() => {
                 </div>
             </div>
             <div className='sidebar__actions'>
-                <Button type='accept'>
-                    Accept
-                </Button>
-                <Button type='cancel'>
-                    Reset
-                </Button>
+                <Button fullWidth>Accept</Button>
+                <Button type={ButtonType.error} fullWidth>Reset</Button>
             </div>
         </div>
     )

@@ -41,7 +41,7 @@ export const Current = (({question, like, showComments}) => {
         <div className='current'>
             <Question question={question} like={like}/>
             {showComments ? (
-                <LoadingWrapper pending={pending} success={true}>
+                <LoadingWrapper pending={pending}>
                     <div className="current__comments">
                         {(!showAll ? comments.slice(0, 3) : comments).map(((comment: IComment) =>
                             <Comment {...comment} className='current__comment' key={comment._id}/>)

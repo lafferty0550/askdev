@@ -1,36 +1,45 @@
-@import url('../variables');
+@import '../variables';
+@import '../mixins';
 
 .button {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  .flex(center, center, @type: inline-flex);
 
   color: white;
   border-radius: 5px;
   cursor: pointer;
-  width: 150px;
-  height: 40px;
-}
+  padding: .8em 2em;
+  transition: all .2s linear;
 
-.button-accept {
-  background-color: @var-primary-color;
-  transition: background-color .2s linear;
-
-  &:hover {
-    background-color: @var-primary-dark-color;
+  &.primary {
+    transition: all .2s linear;
+    background-color: @var-primary-color;
+    &-dark, &:hover {
+      background-color: @var-primary-dark-color;
+    }
   }
-}
 
-.button-cancel {
-  background-color: @var-error-color;
-  transition: background-color .2s linear;
-
-  &:hover {
-    background-color: @var-error-dark-color;
+  &.secondary {
+    transition: all .2s linear;
+    background-color: @var-secondary-color;
+    &-dark, &:hover {
+      background-color: @var-secondary-dark-color;
+    }
   }
-}
 
-.button-disabled {
-  pointer-events: none;
-  background-color: #ddd;
+  &.error {
+    transition: all .2s linear;
+    background-color: @var-error-color;
+    &-dark, &:hover {
+      background-color: @var-error-dark-color;
+    }
+  }
+
+  &.disabled {
+    pointer-events: none;
+    background-color: @var-disabled-color;
+  }
+
+  &.full-width {
+    width: 100%;
+  }
 }

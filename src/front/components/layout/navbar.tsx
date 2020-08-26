@@ -24,6 +24,20 @@ type Props = {
 export const Navbar = (({logout, isAuth, loginPending, path}) => {
     const [active, setActive] = useState(path);
 
+    const items = [{
+        path: '/questions',
+        Icon: QuestionIcon,
+        label: 'Questions'
+    }, {
+        path: '/chat',
+        Icon: ChatIcon,
+        label: 'Chat'
+    }, {
+        path: '/faq',
+        Icon: FAQIcon,
+        label: 'FAQ'
+    }];
+
     return (
         <div className='navbar'>
             <Link className='navbar__logo' to='/questions'>
@@ -34,43 +48,26 @@ export const Navbar = (({logout, isAuth, loginPending, path}) => {
                 ASK QUESTION
             </Link>
             <nav className='navbar__nav'>
-                <Link to='/questions' onClick={() => setActive('/questions')}
-                      className={active === '/questions' ? 'active' : undefined}>
-                    <QuestionIcon/>
-                    Questions
-                </Link>
-                <Link to='/chat' onClick={() => setActive('/chat')}
-                      className={active === '/chat' ? 'active' : undefined}>
-                    <ChatIcon/>
-                    Chat
-                </Link>
-                <Link to='/faq' onClick={() => setActive('/faq')}
-                      className={active === '/faq' ? 'active' : undefined}>
-                    <FAQIcon/>
-                    FAQ
-                </Link>
+                {items.map(item => (
+                    <Link to={item.path} onClick={() => setActive(item.path)}
+                          className={active === item.path ? 'active' : undefined} key={item.path}>
+                        <item.Icon/>
+                        {item.label}
+                    </Link>
+                ))}
             </nav>
-            <LoadingWrapper pending={loginPending} success={true}>
+            <LoadingWrapper pending={loginPending}>
                 {isAuth
                     ? (
                         <div className='navbar__footer'>
                             <Link to='/profile'><UserIcon className='navbar__account'/></Link>
-                            <Link to='/signin' onClick={logout}>
-                                <SignOutIcon/>
-                                Sign Out
-                            </Link>
+                            <Link to='/signin' onClick={logout}><SignOutIcon/>Sign Out</Link>
                         </div>
                     )
                     : (
                         <div className='navbar__footer'>
-                            <Link to='/signin'>
-                                <SignInIcon/>
-                                Sign In
-                            </Link>
-                            <Link to='/signup'>
-                                <SignUpIcon/>
-                                Sign Up
-                            </Link>
+                            <Link to='/signin'><SignInIcon/>Sign In</Link>
+                            <Link to='/signup'><SignUpIcon/>Sign Up</Link>
                         </div>
                     )
                 }

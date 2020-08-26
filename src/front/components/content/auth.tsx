@@ -42,7 +42,7 @@ export const Auth = (({login, register, isLogin}) => {
                        className='auth-page__input'/>
             </div>
             <div className='auth-page__actions'>
-                <Button type='accept' onClick={() => {
+                <Button fullWidth onClick={() => {
                     if (isLogin && login)
                         login({email, password})
                     else if (register)
