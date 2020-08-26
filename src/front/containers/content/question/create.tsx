@@ -13,6 +13,7 @@ export const CreateContainer = (() => {
     const {pending, success, msg, makeFetch} = useFetch<PostQuestionData>();
 
     useChangeEffect(() => {
+        // if success is true (default value is false) then do redirect
         setRedirect(true);
     }, [success]);
 

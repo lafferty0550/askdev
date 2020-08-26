@@ -1,5 +1,6 @@
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 
+// useEffect that calls only when deps are changed (not in first render)
 export const useChangeEffect = (func: Function, deps: Array<any>) => {
     const didMount = useRef(false);
 

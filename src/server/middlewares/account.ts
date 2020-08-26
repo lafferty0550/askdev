@@ -2,7 +2,7 @@ import {Request, Response, NextFunction} from 'express';
 import jwt from 'jsonwebtoken';
 
 import db from '$server/models';
-import Validator from '$common/helpers/validator';
+import {Validator} from '$common/helpers/validator';
 import {IUser, LoginResponse, RegisterPayload} from '$common/types';
 import {typedSend} from '$server/generics';
 import {EMAIL_IS_ALREADY_EXISTS, JWT_EXPIRES, NO_TOKEN, VALIDATION_FAILED} from '$server/constants';

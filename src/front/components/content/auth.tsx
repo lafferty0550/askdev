@@ -1,6 +1,6 @@
 import React, {ChangeEvent, useState} from 'react';
 
-import Validator from '$common/helpers/validator';
+import {Validator} from '$common/helpers/validator';
 import {Input} from '../input';
 import {EmailIcon, NicknameIcon, PasswordIcon} from '../icons';
 import {Button} from '../button';
@@ -9,7 +9,8 @@ import {LoginPayload, RegisterPayload} from '$common/types';
 type Props = {
     login?: (user: LoginPayload) => void,
     register?: (user: RegisterPayload) => void,
-    isLogin: boolean
+
+    isLogin: boolean // is this component is login or register
 }
 
 import './auth.less';

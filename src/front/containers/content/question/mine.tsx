@@ -5,6 +5,7 @@ import {AccountState} from '$account/types';
 import {QuestionList} from '$components/content/question/list';
 
 export const MyQuestionListContainer = (() => {
+    // take my questions from user info and render it
     const {authorized, about}: AccountState = useContext(AccountContext);
 
     if (!authorized)

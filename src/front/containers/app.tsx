@@ -1,8 +1,8 @@
 import React, {useContext, useEffect, useMemo} from 'react';
-import {Route} from 'react-router-dom';
+import { Route } from 'react-router-dom';
 
-import {AccountDispatchContext} from '$account/context';
-import {useFetch} from '$hooks/useFetch';
+import {AccountContext, AccountDispatchContext} from '$account/context';
+import {FetchResult, useFetch} from '$hooks/useFetch';
 import {GetMeData} from '$common/types';
 import {API} from '$core/api';
 import {ACTION_TYPES} from '$account/reducer';
@@ -30,8 +30,7 @@ export const App = () => {
 
     return (
         <Layout>
-            <Route path='/' render={(props) =>
-                <NavbarContainer loginPending={pending} path={props.location.pathname}/>}/>
+            <Route path='/' render={(props) => <NavbarContainer loginPending={pending} path={props.location.pathname}/>}/>
             {ContentMemo}
         </Layout>
     );

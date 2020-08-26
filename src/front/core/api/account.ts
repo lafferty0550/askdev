@@ -10,6 +10,9 @@ import {
     RegisterResponse
 } from '$common/types';
 
+/*
+    Account API
+ */
 export default class AccountAPI extends BaseAPI {
     public login = async (user: LoginPayload): Promise<LoginResponse> => {
         const res: AxiosResponse = await this.instance.post('/account/login', user);

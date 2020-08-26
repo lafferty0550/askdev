@@ -10,6 +10,7 @@ export const QuestionListContainer = (() => {
     const {pending, success, data, msg, makeFetch} = useFetch<GetQuestionsData>();
 
     useEffect(() => {
+        // fetch data when component did mount
         makeFetch(() => API.questions.getAll()).then();
     }, []);
 

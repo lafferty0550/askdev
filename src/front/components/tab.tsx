@@ -30,26 +30,27 @@ type TabsProps = {
 };
 
 export const Tabs = (({children, className}) => {
-    const [active, setActive] = useState(children[0].props.label);
+    const [active, setActive] = useState(children[0].props.label); // active link
 
-    let classname = 'tabs';
+    let cn = 'tabs';
     if (className)
-        classname += className;
+        cn += className;
 
     return (
-        <div className={classname}>
+        <div className={cn}>
             <div className="tabs__list">
-                {children.map(child => (
-                    <Tab label={child.props.label} key={child.props.label} active={active === child.props.label}
+                {children.map(({props: {label}}) => (
+                    <Tab label={label} key={label} active={active === label}
                          onClick={(tab: string) => setActive(tab)}/>
                 ))}
             </div>
             <div className="tabs__content">
-                {children.map((child, index) => {
-                    if (child.props.label !== active)
-                        return null;
-                    return <Fragment key={index}>{child.props.children()}</Fragment>;
-                })}
+                {children.map(({props: {label, children}}) =>
+                    // if current child is active then call children function that render a component
+                    (label === active)
+                        ? <Fragment key={label}>{children()}</Fragment>
+                        : null
+                )}
             </div>
         </div>
     );

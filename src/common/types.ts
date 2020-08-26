@@ -37,7 +37,7 @@ export interface IComment {
 }
 
 /**
- * Returned data from server
+ * Returned data from server in response body
  */
 
 export type LoginData = { user: IUser, token: string, refreshToken: string };

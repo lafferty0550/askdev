@@ -1,3 +1,4 @@
+// Class that helps to manipulate with local storage
 export class LocalStorage {
     static get JWT(): string {
         return localStorage.getItem('token') || '';

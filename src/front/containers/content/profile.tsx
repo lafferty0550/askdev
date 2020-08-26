@@ -10,6 +10,7 @@ import {API} from '$core/api';
 export const ProfileContainer = (() => {
     const {about}: AccountState = useContext(AccountContext);
     const {pending, success, msg, data, makeFetch} = useFetch<PatchMeData>();
+
     const [email, setEmail] = useState(about!.email);
     const [nickname, setNickname] = useState(about!.nickname);
     const [password, setPassword] = useState(about!.password);

@@ -15,21 +15,23 @@ import {useChangeEffect} from '$hooks/useChangeEffect';
 type Props = { isLogin: boolean };
 
 export const AuthContainer = (({isLogin}) => {
-    const [redirect, setRedirect] = useState(false);
+    const [redirect, setRedirect] = useState(false); // used when auth is success
+
     if (isLogin) {
         const {pending, success, msg, data, makeFetch} = useFetch<LoginData>();
         const dispatch = useContext<AccountDispatch>(AccountDispatchContext);
 
         useChangeEffect(() => {
             if (!success) return;
+            // when fetch is success then we put tokens into local storage and put user info into store
+            // then do redirect
             LocalStorage.JWT = data!.token;
             LocalStorage.refreshJWT = data!.refreshToken;
             dispatch({type: ACTION_TYPES.SET_USER, user: data!.user});
             setRedirect(true);
         }, [success, data]);
 
-        const handler = async (user: LoginPayload) =>
-            await makeFetch(() => API.account.login(user));
+        const handler = (user: LoginPayload) => makeFetch(() => API.account.login(user));
 
         if (redirect)
             return <Redirect to='/questions'/>;
@@ -43,12 +45,10 @@ export const AuthContainer = (({isLogin}) => {
         const {pending, success, msg, makeFetch} = useFetch<RegisterData>();
 
         useEffect(() => {
-            if (success)
-                setRedirect(true);
+            if (success) setRedirect(true);
         }, [success]);
 
-        const handler = async (user: RegisterPayload) =>
-            await makeFetch(() => API.account.register(user));
+        const handler = (user: RegisterPayload) => makeFetch(() => API.account.register(user));
 
         if (redirect)
             return <Redirect to='/signin'/>;

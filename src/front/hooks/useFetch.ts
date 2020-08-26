@@ -19,12 +19,15 @@ export type FetchResult<T = any> = {
     makeFetch: (handler: APIHandler) => Promise<void>
 };
 
+// ExpectedData is data which comes from server
 export const useFetch = <ExpectedData extends Data>(): FetchResult<ExpectedData> => {
     const [pending, setPending] = useState<Pending>(Pending.idle);
     const [success, setSuccess] = useState(false);
     const [msg, setMsg] = useState<string>();
     const [data, setData] = useState<ExpectedData>();
 
+    // Takes API handler that should make call to API
+    // For example: makeFetch(() => API.{target}.{action}());
     const makeFetch = async (handler: APIHandler) => {
         setPending(Pending.fetching);
         try {
