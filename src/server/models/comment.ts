@@ -26,6 +26,4 @@ const schema = new Schema({
     }
 });
 
-schema.plugin(require('mongoose-autopopulate'));
-
 export default model<ICommentDoc>('comment', schema);

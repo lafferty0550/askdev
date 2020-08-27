@@ -5,6 +5,7 @@ import {IComment, PostLikeData} from '$common/types';
 import {useChangeEffect} from '$hooks/useChangeEffect';
 import {API} from '$core/api';
 import {useFetch} from '$hooks/useFetch';
+import {useLikes} from '$hooks/useLikes';
 
 type Props = {
     comment: IComment,
@@ -12,13 +13,7 @@ type Props = {
 };
 
 export const CommentContainer = (({comment, className}) => {
-    const [likes, setLikes] = useState(comment?.likes || 0); // likes count
-    const likeResult = useFetch<PostLikeData>();
-    
-    useChangeEffect(() => setLikes(likeResult.data!.count), [likeResult.data]);
+    const {likeResult, likes, setLikes, like} = useLikes(comment.likes, 'comment');
 
-    const like = () =>
-        likeResult.makeFetch(() => API.likes.post({target: 'comment', id: comment._id}));
-
-    return <Comment comment={{...comment, likes}} like={like} className={className}/>;
+    return <Comment comment={{...comment, likes}} like={() => like(comment._id)} className={className}/>;
 }) as React.FC<Props>;

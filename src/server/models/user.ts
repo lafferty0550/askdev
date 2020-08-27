@@ -43,6 +43,4 @@ const schema = new Schema({
     }]
 });
 
-schema.plugin(require('mongoose-autopopulate'));
-
 export default model<IUserDoc>('user', schema);

@@ -3,24 +3,15 @@ import {Request, Response} from 'express';
 import db from '$models';
 import Tools from '$server/tools';
 import {
-    GetMeResponse,
-    IUser,
-    LoginData,
-    LoginPayload,
-    LoginResponse, PatchMePayload,
-    PatchMeResponse,
-    RefreshTokenResponse,
-    RegisterPayload,
-    RegisterResponse
+    GetMeResponse, IUser, LoginData, LoginPayload,
+    LoginResponse, PatchMePayload, PatchMeResponse,
+    RefreshTokenResponse, RegisterPayload, RegisterResponse
 } from '$common/types';
 import {JWTPayload, TokenType} from '$server/types';
 import {typedSend} from '$server/generics';
 import {
-    INVALID_CREDENTIALS,
-    INVALID_TOKEN,
-    LOGIN_SUCCESS,
-    REGISTER_SUCCESS, UPDATE_SUCCESS,
-    USER_DOES_NOT_EXIST
+    INVALID_CREDENTIALS, INVALID_TOKEN, LOGIN_SUCCESS,
+    REGISTER_SUCCESS, UPDATE_SUCCESS, USER_DOES_NOT_EXIST
 } from '$server/constants';
 
 const refreshTokens = {} as { [key: string]: LoginData };

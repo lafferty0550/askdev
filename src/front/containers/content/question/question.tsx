@@ -1,11 +1,13 @@
-import React, {ReactNode, useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 
 import {Current} from '$components/content/question/current';
-import {useFetch} from '$hooks/useFetch';
-import {GetQuestionData, IQuestion, PostLikeData, PostStarData} from '$common/types';
+import {Pending, useFetch} from '$hooks/useFetch';
+import {GetQuestionData, IQuestion} from '$common/types';
 import {API} from '$core/api';
 import {LoadingWrapper} from '$components/content/loading-wrapper';
 import {useChangeEffect} from '$hooks/useChangeEffect';
+import {useLikes} from '$hooks/useLikes';
+import {useStars} from '$hooks/useStars';
 
 type Props = {
     id?: string, // used to fetch data
@@ -14,48 +16,34 @@ type Props = {
 };
 
 export const QuestionContainer = (({id, question, showComments = false}) => {
-    const [likes, setLikes] = useState(question?.likes || 0); // likes count
-    const [stars, setStars] = useState(question?.stars || 0); // stars count
+    const {likeResult, setLikes, likes, like} = useLikes(question?.likes || 0, 'question');
+    const {starResult, setStars, stars, star} = useStars(question?.stars || 0);
     const questionResult = useFetch<GetQuestionData>();
-    const likeResult = useFetch<PostLikeData>();
-    const starResult = useFetch<PostStarData>();
 
     // if there is no data in props then we need to fetch question
     useEffect(() => {
         if (!question)
             questionResult.makeFetch(() => API.questions.getOne(id!)).then();
     }, []);
-    // if there is no data in props and fetch is done then we takes likes amount from fetch data
+    // if there is no data in props and fetch is done then we takes likes and stars amount from fetched data
     useChangeEffect(() => {
-        if (!question) {
-            setLikes(questionResult.data!.question.likes);
-            setStars(questionResult.data!.question.stars);
-        }
-    }, [questionResult.data]);
+        // if question exists
+        if ((questionResult.pending !== Pending.fetched) || question)
+            return;
 
-    // update likes count after like a question
-    useChangeEffect(() => setLikes(likeResult.data!.count), [likeResult.data]);
-    useChangeEffect(() => setStars(starResult.data!.count), [starResult.data]);
+        setLikes(questionResult.data!.question.likes);
+        setStars(questionResult.data!.question.stars);
+    }, [questionResult.pending]);
 
-    const like = (_id: string) =>
-        likeResult.makeFetch(() => API.likes.post({target: 'question', id: _id}));
-
-    const star = (_id: string) =>
-        starResult.makeFetch(() => API.stars.post({target: 'question', id: _id}));
-
-    // if a exists then render Current component with a in props
-    // otherwise if b exists then render Current component with b in props
-    // otherwise return null
-    const renderOneOf = (a: IQuestion | undefined, b: IQuestion | undefined): ReactNode | null => {
-        if (a) return <Current question={{...a, likes, stars}} like={like} star={star} showComments={showComments}/>;
-        if (b) return renderOneOf(b, undefined);
-        return null;
-    };
-
+    let data = question || questionResult.data?.question!;
     return (
         <LoadingWrapper pending={questionResult.pending}>
             {/*if there is data in props then render it, otherwise we need to render fetched data*/}
-            {renderOneOf(question, questionResult.data?.question)}
+            {data
+                ? <Current question={{...data, likes, stars}} like={like}
+                           star={star}
+                           showComments={showComments}/>
+                : null}
         </LoadingWrapper>
     );
 }) as React.FC<Props>;

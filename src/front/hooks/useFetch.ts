@@ -12,7 +12,7 @@ export enum Pending {
 
 export type FetchResult<T = any> = {
     pending: Pending,
-    success: boolean,
+    success?: boolean,
     msg?: string,
     data?: T,
 
@@ -22,7 +22,7 @@ export type FetchResult<T = any> = {
 // ExpectedData is data which comes from server
 export const useFetch = <ExpectedData extends Data>(): FetchResult<ExpectedData> => {
     const [pending, setPending] = useState<Pending>(Pending.idle);
-    const [success, setSuccess] = useState(false);
+    const [success, setSuccess] = useState<boolean>();
     const [msg, setMsg] = useState<string>();
     const [data, setData] = useState<ExpectedData>();
 
@@ -38,6 +38,7 @@ export const useFetch = <ExpectedData extends Data>(): FetchResult<ExpectedData>
             setSuccess(true);
         } catch (err) {
             const ex: AxiosError<Response> = err;
+            setSuccess(false);
             if (ex.response)
                 setMsg(ex.response.data.msg);
         }

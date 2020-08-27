@@ -1,7 +1,7 @@
 import {Request, Response} from 'express';
 
-import db, {IComment} from '$models';
-import {IQuestion, IUser, PostLikeQuery, PostLikeResponse} from '$common/types';
+import db from '$models';
+import {IUser, PostLikeQuery, PostLikeResponse} from '$common/types';
 import Tools from '$server/tools';
 import {typedSend} from '$server/generics';
 import {INVALID_TARGET, LIKE_SUCCESS} from '$server/constants';

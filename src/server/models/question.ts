@@ -1,8 +1,9 @@
-import {Schema, Document, model} from 'mongoose';
+import {Schema, Document, model, HookSyncCallback, Query, HookNextFunction} from 'mongoose';
 
 import {IQuestion} from '$common/types';
 
-export interface IQuestionDoc extends Document, IQuestion {}
+export interface IQuestionDoc extends Document, IQuestion {
+}
 
 const schema = new Schema({
     title: {
@@ -31,8 +32,15 @@ const schema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'comment'
     }]
-});
+}, {versionKey: false});
 
-schema.plugin(require('mongoose-autopopulate'));
+const autoPopulate: HookSyncCallback<Query<any>> = function (next: HookNextFunction) {
+    this.populate({path: 'comments', populate: {path: 'user'}});
+    next();
+}
+
+schema.pre('find', autoPopulate);
+schema.pre('findOne', autoPopulate);
+schema.pre('findById', autoPopulate);
 
 export default model<IQuestionDoc>('question', schema);
