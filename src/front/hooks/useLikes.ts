@@ -12,8 +12,9 @@ export const useLikes = (initial: number = 0, target: 'question' | 'comment') =>
     useChangeEffect(() => {
         if (likeResult.pending !== Pending.fetched)
             return;
-        setLikes(likeResult.data!.count);
-    }, [likeResult.pending]);
+        if (likeResult.data)
+            setLikes(likeResult.data!.count);
+    }, [likeResult.pending, likeResult.data]);
 
     const like = (id: string) =>
         likeResult.makeFetch(() => API.likes.post({target, id}));
