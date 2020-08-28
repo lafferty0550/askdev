@@ -12,7 +12,8 @@ export const useStars = (initial: number = 0) => {
     useChangeEffect(() => {
         if (starResult.pending !== Pending.fetched)
             return;
-        setStars(starResult.data!.count);
+        if (starResult.data)
+            setStars(starResult.data!.count);
     }, [starResult.pending]);
 
     const star = (id: string) =>
