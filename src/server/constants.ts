@@ -8,7 +8,7 @@ export const LOGIN_SUCCESS = 'Login success';
 export const REGISTER_SUCCESS = 'Register success';
 export const INVALID_TOKEN = 'Invalid token';
 export const EMAIL_IS_ALREADY_EXISTS = 'Email is already exists';
-export const NO_TOKEN = 'No token';
+export const NO_TOKEN = 'You should login';
 export const JWT_EXPIRES = 'JWT expires';
 
 export const NOT_FOUND = 'NOT_FOUND';
